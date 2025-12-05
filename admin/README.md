@@ -33,7 +33,7 @@ admin/
 3. 填写信息：
    - Application name: `TUST OpenAtom CMS`
    - Homepage URL: `https://tournesoll.github.io/tust-openatom-website`
-   - Authorization callback URL: `https://api.netlify.com/auth/done`
+   - Authorization callback URL: `https://tournesoll.github.io/tust-openatom-website/admin/`
 4. 获取 Client ID（不需要 Client Secret，使用 PKCE）
 
 ### 本地开发

@@ -34,9 +34,9 @@
 
    **Authorization callback URL（授权回调 URL）**
    ```
-   https://api.netlify.com/auth/done
+   https://tournesoll.github.io/tust-openatom-website/admin/
    ```
-   *⚠️ 重要：这个 URL 必须完全一致，不能有拼写错误*
+   *⚠️ 重要：这个 URL 必须指向你的网站的管理后台路径，不能使用 Netlify 的 URL（因为使用的是 PKCE 认证，不是 Netlify Identity）*
 
 3. 点击 **"Register application"** 按钮
 
@@ -264,7 +264,7 @@ git push
 **症状**：点击登录按钮后没有反应，或提示错误
 
 **排查步骤**：
-1. 检查 OAuth App 的回调 URL 是否正确：`https://api.netlify.com/auth/done`
+1. 检查 OAuth App 的回调 URL 是否正确：`https://tournesoll.github.io/tust-openatom-website/admin/`
 2. 检查 `admin/config.yml` 中的 `repo` 是否正确：`Tournesoll/tust-openatom-website`
 3. 检查 GitHub Pages 是否已成功构建
 4. 清除浏览器缓存后重试
@@ -312,7 +312,7 @@ git push
 完成以下所有步骤后，Decap CMS 应该可以正常使用：
 
 - [ ] 创建了 GitHub OAuth App
-- [ ] 设置了正确的回调 URL：`https://api.netlify.com/auth/done`
+- [ ] 设置了正确的回调 URL：`https://tournesoll.github.io/tust-openatom-website/admin/`
 - [ ] 获取了 Client ID（已记录）
 - [ ] 代码已推送到 GitHub
 - [ ] GitHub Pages 构建成功

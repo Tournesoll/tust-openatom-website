@@ -8,7 +8,6 @@ backend:
   name: github
   repo: Tournesoll/tust-openatom-website  # GitHub 仓库：用户名/仓库名
   branch: main                            # 分支名称
-  base_url: https://api.github.com        # GitHub API 地址（用于读写仓库）
   # 使用 PKCE 认证，直接调用 GitHub OAuth（不需要代理服务器）
   auth_type: pkce                          # 使用 PKCE 认证（更安全，不需要 Client Secret）
   auth_scope: repo                         # 需要的权限范围：repo（读写仓库）
@@ -19,7 +18,7 @@ backend:
   #    - Application name: TUST OpenAtom CMS
   #    - Homepage URL: https://tournesoll.github.io/tust-openatom-website
   #    - Authorization callback URL: https://tournesoll.github.io/tust-openatom-website/admin/
-  #     （重要：回调 URL 必须指向你的网站的管理后台路径）
+  #     （重要：回调 URL 必须指向你的网站的管理后台路径，不是 Netlify 的 URL）
   # 4. 创建后获取 Client ID（不需要 Client Secret，PKCE 会自动处理）
   # 5. PKCE 认证可以直接在客户端处理 OAuth 流程，不需要代理服务器
 
