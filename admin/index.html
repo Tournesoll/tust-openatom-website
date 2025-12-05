@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>内容管理后台 - 天津科技大学开放原子开源协会</title>
-  
+
   <!-- Decap CMS -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  
+
   <style>
     body {
       margin: 0;
@@ -17,11 +18,11 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background: #f5f5f5;
     }
-    
+
     #nc-root {
       min-height: 100vh;
     }
-    
+
     .loading {
       display: flex;
       flex-direction: column;
@@ -31,7 +32,7 @@
       color: #666;
       font-size: 16px;
     }
-    
+
     .error {
       color: #d32f2f;
       margin-top: 1rem;
@@ -43,23 +44,24 @@
     }
   </style>
 </head>
+
 <body>
   <!-- 加载提示 -->
   <div id="loading" class="loading">
     <div>正在加载管理后台...</div>
     <div id="error" class="error" style="display: none;"></div>
   </div>
-  
+
   <!-- Decap CMS 挂载点 -->
   <div id="nc-root"></div>
-  
+
   <script>
-    (function() {
+    (function () {
       'use strict';
-      
+
       const baseurl = '/tust-openatom-website';
       const configPath = baseurl + '/admin/config.yml';
-      
+
       function showError(message) {
         const errorDiv = document.getElementById('error');
         if (errorDiv) {
@@ -68,7 +70,7 @@
         }
         console.error('Decap CMS Error:', message);
       }
-      
+
       function hideLoading() {
         const loading = document.getElementById('loading');
         if (loading) {
@@ -77,22 +79,30 @@
           }, 500);
         }
       }
-      
+
       // 等待脚本加载
       function initCMS() {
         // 检查 CMS 是否加载
         if (typeof CMS === 'undefined' && typeof window.CMS === 'undefined') {
-          showError('Decap CMS 脚本未加载。请检查：\n1. 网络连接\n2. 浏览器控制台错误\n3. 是否被广告拦截器拦截');
+          // 再等待一下，可能脚本还在加载
+          setTimeout(function () {
+            if (typeof CMS === 'undefined' && typeof window.CMS === 'undefined') {
+              showError('Decap CMS 脚本未加载。请检查：\n1. 网络连接\n2. 浏览器控制台错误\n3. 是否被广告拦截器拦截');
+            } else {
+              initCMS();
+            }
+          }, 1000);
           return;
         }
-        
-        const CMSObj = window.CMS || CMS;
-        
+
         try {
-          // 尝试从指定路径加载配置
-          // Decap CMS 3.0 会自动查找配置文件
-          // 如果使用 baseurl，需要确保配置文件路径正确
-          
+          // 确保挂载点存在
+          const rootElement = document.getElementById('nc-root');
+          if (!rootElement) {
+            showError('找不到 CMS 挂载点 #nc-root');
+            return;
+          }
+
           // 初始化 Netlify Identity
           if (window.netlifyIdentity) {
             window.netlifyIdentity.on("init", user => {
@@ -103,34 +113,35 @@
               }
             });
           }
-          
+
           // CMS 会自动初始化并挂载到 #nc-root
           // 配置文件路径：/tust-openatom-website/admin/config.yml
           console.log('Decap CMS 初始化中，配置文件路径：', configPath);
-          
+
           // 延迟隐藏加载提示，等待 CMS 渲染
           setTimeout(hideLoading, 2000);
-          
+
         } catch (error) {
           showError('初始化失败：' + error.message + '\n\n请查看浏览器控制台获取详细信息。');
           console.error('CMS Init Error:', error);
         }
       }
-      
+
       // 页面加载完成后初始化
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
           setTimeout(initCMS, 500);
         });
       } else {
         setTimeout(initCMS, 500);
       }
-      
+
       // 备用：监听 window.load 事件
-      window.addEventListener('load', function() {
+      window.addEventListener('load', function () {
         setTimeout(initCMS, 1000);
       });
     })();
   </script>
 </body>
+
 </html>
