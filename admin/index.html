@@ -44,12 +44,13 @@
       border-radius: 4px;
       max-width: 600px;
       text-align: left;
+      white-space: pre-wrap;
     }
   </style>
 </head>
 
 <body>
-  <!-- Decap CMS 挂载点 -->
+  <!-- Decap CMS 挂载点 - 必须在脚本之前 -->
   <div id="nc-root"></div>
 
   <!-- 加载提示 -->
@@ -58,54 +59,115 @@
     <div id="error" class="error" style="display: none;"></div>
   </div>
 
-  <!-- Decap CMS - 使用 defer 确保 DOM 准备好后再执行 -->
+  <!-- Netlify Identity Widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" defer></script>
+
+  <!-- Decap CMS - 不使用 defer，手动控制初始化时机 -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
   <script>
-    // 确保 DOM 完全加载后再初始化
-    document.addEventListener('DOMContentLoaded', function () {
-      const baseurl = '/tust-openatom-website';
+    (function () {
+      'use strict';
 
-      // 初始化 Netlify Identity
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = baseurl + "/admin/";
-            });
-          }
-        });
+      const baseurl = '/tust-openatom-website';
+      const configPath = baseurl + '/admin/config.yml';
+
+      function showError(message) {
+        const errorDiv = document.getElementById('error');
+        if (errorDiv) {
+          errorDiv.textContent = message;
+          errorDiv.style.display = 'block';
+        }
+        console.error('Decap CMS Error:', message);
       }
 
-      // 等待 CMS 加载完成
-      function checkCMS() {
+      function hideLoading() {
+        const loading = document.getElementById('loading');
+        if (loading) {
+          setTimeout(() => {
+            loading.style.display = 'none';
+          }, 1000);
+        }
+      }
+
+      // 确保 DOM 和脚本都准备好后再初始化
+      function initCMS() {
+        // 1. 检查挂载点是否存在
         const rootElement = document.getElementById('nc-root');
         if (!rootElement) {
-          console.error('找不到挂载点 #nc-root');
-          return;
+          showError('错误：找不到 CMS 挂载点 #nc-root\n请刷新页面重试');
+          return false;
         }
 
-        // 检查 CMS 是否已加载并初始化
-        if (typeof window.CMS !== 'undefined' || typeof CMS !== 'undefined') {
-          // CMS 已加载，隐藏加载提示
-          setTimeout(function () {
-            const loading = document.getElementById('loading');
-            if (loading) {
-              loading.style.display = 'none';
+        // 2. 检查 CMS 是否加载
+        if (typeof window.CMS === 'undefined' && typeof CMS === 'undefined') {
+          console.log('等待 CMS 脚本加载...');
+          return false;
+        }
+
+        // 3. 初始化 Netlify Identity
+        if (window.netlifyIdentity) {
+          window.netlifyIdentity.on("init", user => {
+            if (!user) {
+              window.netlifyIdentity.on("login", () => {
+                document.location.href = baseurl + "/admin/";
+              });
             }
-          }, 1500);
+          });
+        }
+
+        // 4. CMS 会自动初始化并挂载到 #nc-root
+        // 配置文件会自动从 /admin/config.yml 加载
+        console.log('Decap CMS 初始化完成');
+        hideLoading();
+        return true;
+      }
+
+      // 等待 DOM 和脚本都准备好
+      function waitAndInit() {
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+              if (!initCMS()) {
+                // 如果初始化失败，继续等待
+                setTimeout(waitAndInit, 200);
+              }
+            }, 100);
+          });
         } else {
-          // 继续等待
-          setTimeout(checkCMS, 200);
+          // DOM 已准备好
+          setTimeout(function () {
+            if (!initCMS()) {
+              // 如果初始化失败，继续等待
+              setTimeout(waitAndInit, 200);
+            }
+          }, 100);
         }
       }
 
-      // 等待脚本加载完成
+      // 页面加载完成后也检查一次
       window.addEventListener('load', function () {
-        setTimeout(checkCMS, 500);
+        setTimeout(function () {
+          if (!initCMS()) {
+            // 最多等待 10 秒
+            let attempts = 0;
+            const maxAttempts = 50; // 50 * 200ms = 10秒
+            const retry = setInterval(function () {
+              attempts++;
+              if (initCMS() || attempts >= maxAttempts) {
+                clearInterval(retry);
+                if (attempts >= maxAttempts) {
+                  showError('CMS 初始化超时\n请检查：\n1. 网络连接\n2. 浏览器控制台错误\n3. 配置文件是否正确');
+                }
+              }
+            }, 200);
+          }
+        }, 500);
       });
-    });
+
+      // 开始初始化流程
+      waitAndInit();
+    })();
   </script>
 </body>
 
