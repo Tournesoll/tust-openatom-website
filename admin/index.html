@@ -59,10 +59,7 @@
     <div id="error" class="error" style="display: none;"></div>
   </div>
 
-  <!-- Netlify Identity Widget - Decap CMS 需要它作为 OAuth 代理 -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-  <!-- Decap CMS - 不使用 defer，手动控制初始化时机 -->
+  <!-- Decap CMS - 使用 PKCE 认证，直接调用 GitHub OAuth，不需要 Netlify Identity -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
   <script>
@@ -105,16 +102,8 @@
           return false;
         }
 
-        // 3. 初始化 Netlify Identity（Decap CMS 需要它作为 OAuth 代理）
-        if (window.netlifyIdentity) {
-          window.netlifyIdentity.on("init", user => {
-            if (!user) {
-              window.netlifyIdentity.on("login", () => {
-                document.location.href = baseurl + "/admin/";
-              });
-            }
-          });
-        }
+        // 3. Decap CMS 使用 PKCE 认证，直接调用 GitHub OAuth
+        // 不需要 Netlify Identity，PKCE 会在客户端处理 OAuth 流程
 
         // 4. CMS 会自动初始化并挂载到 #nc-root
         // 配置文件会自动从 /admin/config.yml 加载
