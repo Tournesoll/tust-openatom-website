@@ -59,7 +59,7 @@
     <div id="error" class="error" style="display: none;"></div>
   </div>
 
-  <!-- Netlify Identity Widget -->
+  <!-- Netlify Identity Widget - Decap CMS 需要它作为 OAuth 代理 -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
   <!-- Decap CMS - 不使用 defer，手动控制初始化时机 -->
@@ -105,7 +105,7 @@
           return false;
         }
 
-        // 3. 初始化 Netlify Identity
+        // 3. 初始化 Netlify Identity（Decap CMS 需要它作为 OAuth 代理）
         if (window.netlifyIdentity) {
           window.netlifyIdentity.on("init", user => {
             if (!user) {
