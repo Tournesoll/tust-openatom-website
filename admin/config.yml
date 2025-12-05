@@ -1,0 +1,162 @@
+# ============================================
+# Decap CMS 配置文件
+# 天津科技大学开放原子开源协会 - 内容管理后台
+# ============================================
+
+# 后端配置 - GitHub 后端
+backend:
+  name: github
+  repo: Tournesoll/tust-openatom-website  # GitHub 仓库：用户名/仓库名
+  branch: main                            # 分支名称
+  base_url: https://api.github.com        # GitHub API 地址
+  auth_type: pkce                          # 使用 PKCE 认证（更安全）
+
+# 媒体文件存储配置
+media_folder: "assets/images/uploads"      # 媒体文件存储路径（相对于仓库根目录）
+public_folder: "/tust-openatom-website/assets/images/uploads"  # 公共访问路径（考虑 baseurl）
+
+# 站点配置
+site_url: https://tournesoll.github.io/tust-openatom-website  # 网站 URL
+display_url: https://tournesoll.github.io/tust-openatom-website  # 显示 URL
+logo_url: https://tournesoll.github.io/tust-openatom-website/assets/images/logo.png  # Logo（可选）
+
+# 本地后端（开发环境使用）
+# 取消注释以下配置以在本地开发时使用本地后端
+# local_backend: true
+
+# ============================================
+# 内容集合配置
+# ============================================
+
+collections:
+  # ============================================
+  # 文章集合（Posts）
+  # ============================================
+  - name: "posts"                          # 集合名称
+    label: "技术文章"                      # 显示名称
+    folder: "_posts"                       # 文件存储目录
+    create: true                           # 允许创建新文件
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"  # 文件名格式：YYYY-MM-DD-title
+    extension: "md"                         # 文件扩展名
+    format: "frontmatter"                   # 使用 Front Matter 格式
+    editor:
+      preview: true                        # 启用预览模式
+    
+    # 字段配置
+    fields:
+      # 标题
+      - { label: "标题", name: "title", widget: "string", required: true }
+      
+      # 发布日期
+      - { 
+          label: "发布日期", 
+          name: "date", 
+          widget: "datetime", 
+          required: true,
+          format: "YYYY-MM-DD HH:mm:ss",
+          date_format: "YYYY-MM-DD",
+          time_format: "HH:mm:ss",
+          default: ""
+        }
+      
+      # 布局
+      - { 
+          label: "布局", 
+          name: "layout", 
+          widget: "hidden", 
+          default: "post" 
+        }
+      
+      # 分类（单选）
+      - { 
+          label: "分类", 
+          name: "categories", 
+          widget: "select", 
+          required: true,
+          options: 
+            - { label: "前端技术", value: "frontend" }
+            - { label: "后端技术", value: "backend" }
+            - { label: "设计", value: "design" }
+          default: "frontend"
+        }
+      
+      # 标签（多选）
+      - { 
+          label: "标签", 
+          name: "tags", 
+          widget: "list", 
+          required: false,
+          allow_add: true,
+          default: []
+        }
+      
+      # 作者
+      - { 
+          label: "作者", 
+          name: "author", 
+          widget: "string", 
+          required: false,
+          default: "技术社团"
+        }
+      
+      # 封面图（可选）
+      - { 
+          label: "封面图", 
+          name: "image", 
+          widget: "image", 
+          required: false,
+          choose_url: false
+        }
+      
+      # 文章摘要（可选）
+      - { 
+          label: "摘要", 
+          name: "excerpt", 
+          widget: "text", 
+          required: false,
+          hint: "文章摘要，会显示在文章列表中"
+        }
+      
+      # 正文内容
+      - { 
+          label: "正文", 
+          name: "body", 
+          widget: "markdown", 
+          required: true,
+          buttons:
+            - bold
+            - italic
+            - link
+            - heading-one
+            - heading-two
+            - heading-three
+            - heading-four
+            - heading-five
+            - heading-six
+            - code
+            - quote
+            - bulleted-list
+            - numbered-list
+        }
+
+# ============================================
+# 编辑器配置
+# ============================================
+
+# 编辑器设置
+editor:
+  # 预览模式
+  preview: true
+  
+  # 自动保存
+  autosave: true
+  
+  # 保存间隔（毫秒）
+  autosave_interval: 10000  # 10秒
+
+# ============================================
+# 国际化配置（可选）
+# ============================================
+
+# locale: "zh"  # 中文界面（Decap CMS 默认支持中文）
+

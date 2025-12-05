@@ -6,3 +6,6 @@ _site/
 # 只忽略根目录的 vendor，不忽略 assets/vendor
 /vendor/
 Gemfile.lock
+
+# 媒体文件（上传的图片需要被跟踪，所以不忽略）
+# assets/images/uploads/
