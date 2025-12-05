@@ -1,0 +1,103 @@
+<footer class="footer">
+  <div class="container">
+    <div class="columns">
+      
+      <!-- 社团信息 -->
+      <div class="column is-4">
+        <h5 class="title is-5 has-text-primary">{{ site.club_name }}</h5>
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+          {{ site.description }}
+        </p>
+        <p style="color: #6B7280;">
+          成立于 {{ site.founded_year }}
+        </p>
+        <p style="color: #6B7280; margin-top: 0.5rem; font-size: 0.875rem;">
+          指导单位：{{ site.guide_unit }}
+        </p>
+      </div>
+      
+      <!-- 快速链接 -->
+      <div class="column is-4">
+        <h5 class="title is-5 has-text-primary">快速链接</h5>
+        <ul style="list-style: none; padding: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <a href="/">
+              <i class="fas fa-home"></i> 首页
+            </a>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <a href="/posts">
+              <i class="fas fa-book"></i> 技术文章
+            </a>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <a href="/intro">
+              <i class="fas fa-users"></i> 社团简介
+            </a>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <a href="/about">
+              <i class="fas fa-envelope"></i> 联系我们
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- 社交媒体 -->
+      <div class="column is-4">
+        <h5 class="title is-5 has-text-primary">关注我们</h5>
+        <div class="buttons">
+          {% if site.github_username %}
+          <a href="https://github.com/{{ site.github_username }}" 
+             class="button is-small" 
+             style="background-color: var(--bg-secondary); color: var(--text-secondary);"
+             target="_blank"
+             title="GitHub">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+          </a>
+          {% endif %}
+          
+          {% if site.twitter_username %}
+          <a href="https://twitter.com/{{ site.twitter_username }}" 
+             class="button is-small" 
+             style="background-color: var(--bg-secondary); color: var(--text-secondary);"
+             target="_blank"
+             title="Twitter">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+          </a>
+          {% endif %}
+          
+          {% if site.bilibili_uid %}
+          <a href="https://space.bilibili.com/{{ site.bilibili_uid }}" 
+             class="button is-small" 
+             style="background-color: var(--bg-secondary); color: var(--text-secondary);"
+             target="_blank"
+             title="Bilibili">
+            <span class="icon">
+              <i class="fab fa-bilibili"></i>
+            </span>
+          </a>
+          {% endif %}
+        </div>
+        
+        <p style="color: var(--text-gray); font-size: 0.875rem; margin-top: 1rem;">
+          <i class="fas fa-envelope"></i> {{ site.email }}
+        </p>
+      </div>
+      
+    </div>
+    
+    <!-- 版权信息 -->
+    <div class="content has-text-centered" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-color); color: var(--text-gray);">
+      <p>
+        &copy; {{ 'now' | date: "%Y" }} {{ site.club_name }}. 
+        使用 <a href="https://jekyllrb.com/" target="_blank" style="color: var(--info);">Jekyll</a> 构建，
+        托管于 <a href="https://pages.github.com/" target="_blank" style="color: var(--info);">GitHub Pages</a>.
+      </p>
+    </div>
+  </div>
+</footer>

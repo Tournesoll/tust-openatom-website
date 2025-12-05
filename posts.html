@@ -1,0 +1,170 @@
+---
+layout: default
+title: 精选文章
+permalink: /posts/
+---
+
+<section class="apple-gradient-bg" style="min-height: 100vh; padding: 6rem 0 4rem 0;">
+  <div class="container">
+    
+    <!-- 页面标题 -->
+    <div class="has-text-centered" style="margin-bottom: 4rem;">
+      <h1 style="font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700; color: #F9FAFB; margin-bottom: 1rem; letter-spacing: -0.02em;">
+        精选文章
+      </h1>
+      <p style="font-size: 1.25rem; color: #9CA3AF;">
+        探索技术，分享知识，共同成长
+      </p>
+    </div>
+    
+    <!-- 分类筛选按钮 -->
+    <div class="has-text-centered" style="margin-bottom: 4rem;">
+      <div style="display: inline-flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
+        <button class="apple-filter-button active" data-category="all">
+          全部文章
+        </button>
+        <button class="apple-filter-button" data-category="frontend">
+          🎨 前端技术
+        </button>
+        <button class="apple-filter-button" data-category="backend">
+          ⚙️ 后端技术
+        </button>
+        <button class="apple-filter-button" data-category="design">
+          ✨ 设计
+        </button>
+      </div>
+    </div>
+    
+    <!-- 文章网格 -->
+    <div class="columns is-multiline is-variable is-6" id="posts-grid">
+      {% for post in site.posts %}
+        <div class="column is-4-desktop is-6-tablet post-item" data-category="{{ post.categories | first }}">
+          <article class="apple-post-card">
+            <div class="apple-post-card-content">
+              
+              <!-- 分类标签 -->
+              <span class="apple-post-category">
+                {% if post.categories.first == 'frontend' %}
+                  🎨 前端技术
+                {% elsif post.categories.first == 'backend' %}
+                  ⚙️ 后端技术
+                {% elsif post.categories.first == 'design' %}
+                  ✨ 设计
+                {% else %}
+                  {{ post.categories | first }}
+                {% endif %}
+              </span>
+              
+              <!-- 标题 -->
+              <h2 class="apple-post-title">
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              </h2>
+              
+              <!-- 摘要 -->
+              <div class="apple-post-excerpt">
+                {% if post.excerpt %}
+                  {{ post.excerpt | strip_html | truncatewords: 25 }}
+                {% else %}
+                  {{ post.content | strip_html | truncatewords: 25 }}
+                {% endif %}
+              </div>
+              
+              <!-- 元信息 -->
+              <div class="apple-post-meta">
+                <span>
+                  <i class="far fa-calendar"></i>
+                  {{ post.date | date: "%Y年%m月%d日" }}
+                </span>
+                {% if post.author %}
+                <span>
+                  <i class="far fa-user"></i>
+                  {{ post.author }}
+                </span>
+                {% endif %}
+              </div>
+              
+            </div>
+          </article>
+        </div>
+      {% endfor %}
+    </div>
+    
+    <!-- 无结果提示 -->
+    <div id="no-results" style="display: none; text-align: center; padding: 4rem 0;">
+      <i class="fas fa-inbox" style="font-size: 4rem; color: #4B5563; margin-bottom: 1.5rem; display: block;"></i>
+      <p style="font-size: 1.25rem; color: #9CA3AF;">暂无该分类的文章</p>
+    </div>
+    
+  </div>
+</section>
+
+<!-- 分类筛选脚本 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('.apple-filter-button');
+    const postItems = document.querySelectorAll('.post-item');
+    const noResults = document.getElementById('no-results');
+    
+    function filterPosts(category) {
+      // 更新按钮状态
+      filterButtons.forEach(btn => {
+        if (btn.getAttribute('data-category') === category) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      
+      // 筛选文章
+      let visibleCount = 0;
+      postItems.forEach(item => {
+        const itemCategory = item.getAttribute('data-category');
+        
+        if (category === 'all' || itemCategory === category) {
+          item.style.display = 'block';
+          visibleCount++;
+          // 添加淡入动画
+          item.style.animation = 'fade-in 0.5s ease-out';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      
+      // 显示/隐藏无结果提示
+      if (visibleCount === 0) {
+        noResults.style.display = 'block';
+      } else {
+        noResults.style.display = 'none';
+      }
+    }
+    
+    // 监听按钮点击
+    filterButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const category = this.getAttribute('data-category');
+        filterPosts(category);
+        // 更新 URL hash
+        window.location.hash = category === 'all' ? '' : category;
+      });
+    });
+    
+    // 页面加载时检查 URL hash
+    const hash = window.location.hash.substring(1); // 移除 # 号
+    if (hash && ['frontend', 'backend', 'design'].includes(hash)) {
+      filterPosts(hash);
+    }
+  });
+</script>
+
+<style>
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

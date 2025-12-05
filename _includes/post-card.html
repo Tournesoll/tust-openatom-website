@@ -1,0 +1,43 @@
+{% assign post = include.post %}
+
+<div class="post-card">
+  <!-- 文章标题 -->
+  <h3 class="post-card-title">
+    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+  </h3>
+  
+  <!-- 文章元信息 -->
+  <div class="post-card-meta">
+    <span>
+      <i class="far fa-calendar"></i>
+      {{ post.date | date: "%Y-%m-%d" }}
+    </span>
+    
+    {% if post.author %}
+    <span>
+      <i class="far fa-user"></i>
+      {{ post.author }}
+    </span>
+    {% endif %}
+  </div>
+  
+  <!-- 文章摘要 -->
+  <div class="post-card-excerpt">
+    {% if post.excerpt %}
+      {{ post.excerpt | strip_html | truncatewords: 30 }}
+    {% else %}
+      {{ post.content | strip_html | truncatewords: 30 }}
+    {% endif %}
+  </div>
+  
+  <!-- 分类标签 -->
+  <div>
+    {% if post.categories %}
+      {% for category in post.categories limit:1 %}
+        <a href="/categories/{{ category | slugify }}" class="post-card-category">
+          {{ category }}
+        </a>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>

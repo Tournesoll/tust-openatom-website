@@ -1,0 +1,71 @@
+# 站点设置
+title: 天津科技大学开放原子开源协会
+description: 开源技术实践与分享平台 - 聚焦Linux/Git/开源项目开发，连接开放原子生态
+author: 天津科技大学开放原子开源协会
+email: contact@tustosc.com
+
+# 社团信息
+club_name: 天津科技大学开放原子开源协会
+club_name_en: TUST OpenAtom Open Source Community
+slogan: 开源是互联网的根基，技术分享是成长的捷径
+slogan_en: Open Source Innovation, Technology Sharing
+founded_year: 2023
+
+# 指导单位
+guide_unit: 天津科技大学人工智能学院
+guide_teacher: 王嫄
+guide_teacher_title: 博士、副教授、硕士生导师、双创中心主任
+
+# 社交链接
+github_username: TUST-OpenAtom
+email_contact: contact@tustosc.com
+twitter_username: ""
+bilibili_uid: ""
+
+# 技术方向
+tech_areas:
+  - Linux系统
+  - Git/GitHub
+  - Python/Java
+  - 前端开发
+  - 后端开发
+  - AI大模型
+
+# 构建设置
+markdown: kramdown
+permalink: /posts/:year/:month/:day/:title/
+
+# 禁用默认主题
+theme: null
+
+# URL 设置
+baseurl: "/tust-openatom-website" # 仓库名
+url: "https://Tournesoll.github.io" # GitHub 用户名
+
+# 分页设置
+paginate: 9
+paginate_path: "/page:num/"
+
+# 排除文件
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - README.md
+  - 实现思路.md
+
+# 插件
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-paginate
+
+# 默认值
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "技术社团"

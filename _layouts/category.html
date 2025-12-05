@@ -1,0 +1,50 @@
+---
+layout: default
+---
+
+<section class="section">
+  <div class="container">
+    
+    <!-- 分类标题 -->
+    <div class="has-text-centered" style="margin-bottom: 3rem;">
+      <h1 class="title is-2 has-text-primary">
+        <span style="font-size: 2.5rem;">{{ page.icon }}</span>
+        {{ page.title }}
+      </h1>
+      <p class="subtitle has-text-grey-light">
+        共 <strong style="color: var(--text-primary);">{{ page.posts.size }}</strong> 篇文章
+      </p>
+    </div>
+    
+    <!-- 文章网格 -->
+    <div class="columns is-multiline">
+      {% if page.posts.size > 0 %}
+        {% for post in page.posts %}
+          <div class="column is-4-desktop is-6-tablet">
+            {% include post-card.html post=post %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="column">
+          <div class="notification" style="background-color: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-secondary);">
+            <p class="has-text-centered">
+              <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; display: block; opacity: 0.5;"></i>
+              该分类暂无文章
+            </p>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    
+    <!-- 返回首页按钮 -->
+    <div class="has-text-centered" style="margin-top: 3rem;">
+      <a href="/" class="button is-primary">
+        <span class="icon">
+          <i class="fas fa-home"></i>
+        </span>
+        <span>返回首页</span>
+      </a>
+    </div>
+    
+  </div>
+</section>

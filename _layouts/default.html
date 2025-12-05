@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  
+  <!-- Bulma CSS (本地) -->
+  <link rel="stylesheet" href="{{ '/assets/vendor/bulma.min.css' | relative_url }}">
+  
+  <!-- Font Awesome Icons (本地) -->
+  <link rel="stylesheet" href="{{ '/assets/vendor/fontawesome.min.css' | relative_url }}">
+  
+  <!-- Prism.js for Code Highlighting (本地) -->
+  <link rel="stylesheet" href="{{ '/assets/vendor/prism-tomorrow.min.css' | relative_url }}">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/apple-style.css' | relative_url }}">
+  
+  <!-- SEO Tags -->
+  {% seo %}
+  
+  <!-- Feed -->
+  {% feed_meta %}
+</head>
+<body class="has-background-dark">
+  
+  <!-- 导航栏 -->
+  {% include header.html %}
+  
+  <!-- 主内容区 -->
+  <main>
+    {{ content }}
+  </main>
+  
+  <!-- 页脚 -->
+  {% include footer.html %}
+  
+  <!-- Prism.js for Code Highlighting (本地) -->
+  <script src="{{ '/assets/vendor/js/prism.min.js' | relative_url }}"></script>
+  <script src="{{ '/assets/vendor/js/prism-javascript.min.js' | relative_url }}"></script>
+  <script src="{{ '/assets/vendor/js/prism-python.min.js' | relative_url }}"></script>
+  <script src="{{ '/assets/vendor/js/prism-css.min.js' | relative_url }}"></script>
+  <script src="{{ '/assets/vendor/js/prism-bash.min.js' | relative_url }}"></script>
+  
+  <!-- Mobile Menu Toggle -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get all "navbar-burger" elements
+      const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+      // Add a click event on each of them
+      $navbarBurgers.forEach(el => {
+        el.addEventListener('click', () => {
+          // Get the target from the "data-target" attribute
+          const target = el.dataset.target;
+          const $target = document.getElementById(target);
+
+          // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+          el.classList.toggle('is-active');
+          $target.classList.toggle('is-active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+---
+layout: default
+---
+
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <!-- 主内容区 -->
+      <div class="column is-8">
+        <article class="box" style="background-color: var(--bg-main); border: 1px solid var(--border-color); padding: 3rem;">
+          
+          <!-- 文章头部 -->
+          <header class="post-header" style="margin-bottom: 2rem; border-bottom: 2px solid var(--border-color); padding-bottom: 1.5rem;">
+            <h1 class="title is-2 has-text-primary" style="margin-bottom: 1rem;">
+              {{ page.title }}
+            </h1>
+            
+            <div class="post-meta" style="display: flex; gap: 1.5rem; flex-wrap: wrap; color: var(--text-gray); font-size: 0.95rem;">
+              <span>
+                <i class="far fa-calendar"></i>
+                {{ page.date | date: "%Y年%m月%d日" }}
+              </span>
+              
+              {% if page.author %}
+              <span>
+                <i class="far fa-user"></i>
+                {{ page.author }}
+              </span>
+              {% endif %}
+              
+              {% if page.categories %}
+              <span>
+                <i class="far fa-folder"></i>
+                {% for category in page.categories %}
+                  <a href="/posts#{{ category | slugify }}" style="color: var(--info); text-decoration: none;">
+                    {% if category == 'frontend' %}
+                      🎨 前端技术
+                    {% elsif category == 'backend' %}
+                      ⚙️ 后端技术
+                    {% elsif category == 'design' %}
+                      ✨ 设计
+                    {% else %}
+                      {{ category }}
+                    {% endif %}
+                  </a>{% unless forloop.last %}, {% endunless %}
+                {% endfor %}
+              </span>
+              {% endif %}
+              
+              {% if page.tags %}
+              <span>
+                <i class="fas fa-tags"></i>
+                {% for tag in page.tags %}
+                  <span class="tag is-small" style="background-color: var(--bg-secondary); color: var(--text-secondary);">{{ tag }}</span>
+                {% endfor %}
+              </span>
+              {% endif %}
+            </div>
+          </header>
+          
+          <!-- 文章内容 -->
+          <div class="content" style="font-size: 1.05rem; line-height: 1.8;">
+            {{ content }}
+          </div>
+          
+          <!-- 文章底部 -->
+          <footer class="post-footer" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+            {% if page.tags %}
+            <div class="tags" style="margin-bottom: 1.5rem;">
+              <strong style="color: var(--text-primary);">标签：</strong>
+              {% for tag in page.tags %}
+                <span class="tag" style="background-color: var(--bg-secondary); color: var(--text-secondary);">{{ tag }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+            
+            <!-- 分享按钮（可选） -->
+            <div class="share-buttons" style="display: flex; gap: 0.5rem;">
+              <strong style="color: var(--text-primary); margin-right: 0.5rem;">分享：</strong>
+              <a href="https://twitter.com/intent/tweet?text={{ page.title }}&url={{ site.url }}{{ page.url }}" 
+                 class="button is-small" 
+                 style="background-color: var(--bg-secondary); color: var(--text-secondary);"
+                 target="_blank">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ page.url }}" 
+                 class="button is-small" 
+                 style="background-color: var(--bg-secondary); color: var(--text-secondary);"
+                 target="_blank">
+                <i class="fab fa-facebook"></i>
+              </a>
+            </div>
+          </footer>
+        </article>
+        
+        <!-- 相关文章推荐 -->
+        {% assign related_posts = site.related_posts | limit: 3 %}
+        {% if related_posts.size > 0 %}
+        <section style="margin-top: 3rem;">
+          <h3 class="title is-4 has-text-primary">相关文章</h3>
+          <div class="columns is-multiline">
+            {% for post in related_posts %}
+              <div class="column is-4">
+                {% include post-card.html post=post %}
+              </div>
+            {% endfor %}
+          </div>
+        </section>
+        {% endif %}
+      </div>
+      
+      <!-- 侧边栏 -->
+      <div class="column is-4">
+        <aside class="box" style="background-color: var(--bg-main); border: 1px solid var(--border-color); position: sticky; top: 20px;">
+          
+          <!-- 文章目录 -->
+          <div class="toc" id="toc">
+            <h4 class="title is-5 has-text-primary" style="margin-bottom: 1rem;">
+              <i class="fas fa-list"></i> 目录
+            </h4>
+            <div id="toc-content" style="color: var(--text-secondary); line-height: 2;">
+              <!-- 目录将由 JavaScript 生成 -->
+            </div>
+          </div>
+          
+          <!-- 作者信息（可选） -->
+          <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+            <h4 class="title is-6 has-text-primary">关于作者</h4>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+              {{ site.description }}
+            </p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 自动生成目录的脚本 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const content = document.querySelector('.content');
+    const tocContent = document.getElementById('toc-content');
+    const headings = content.querySelectorAll('h2, h3');
+    
+    if (headings.length > 0) {
+      const ul = document.createElement('ul');
+      ul.style.listStyle = 'none';
+      ul.style.paddingLeft = '0';
+      
+      headings.forEach((heading, index) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        
+        // 创建锚点 ID
+        const id = 'heading-' + index;
+        heading.id = id;
+        
+        a.href = '#' + id;
+        a.textContent = heading.textContent;
+        a.style.color = 'var(--text-secondary)';
+        a.style.textDecoration = 'none';
+        a.style.display = 'block';
+        a.style.padding = '0.25rem 0';
+        a.style.transition = 'color 0.3s ease';
+        
+        // h3 缩进
+        if (heading.tagName === 'H3') {
+          li.style.paddingLeft = '1rem';
+          a.style.fontSize = '0.9rem';
+        }
+        
+        a.addEventListener('mouseenter', () => {
+          a.style.color = 'var(--text-primary)';
+        });
+        
+        a.addEventListener('mouseleave', () => {
+          a.style.color = 'var(--text-secondary)';
+        });
+        
+        li.appendChild(a);
+        ul.appendChild(li);
+      });
+      
+      tocContent.appendChild(ul);
+    } else {
+      tocContent.innerHTML = '<p style="color: var(--text-gray); font-size: 0.9rem;">本文暂无目录</p>';
+    }
+  });
+</script>

@@ -1,0 +1,225 @@
+---
+layout: default
+---
+
+<!-- Hero 区域 - 苹果风格 -->
+<section class="apple-gradient-bg" style="min-height: 100vh; display: flex; align-items: center; padding: 4rem 0;">
+  <div class="container">
+    <div class="has-text-centered" style="max-width: 1000px; margin: 0 auto; position: relative; z-index: 1;">
+      
+      <!-- 小标题 -->
+      <p style="font-size: 1rem; color: #9CA3AF; margin-bottom: 1.5rem; letter-spacing: 0.1em; text-transform: uppercase; animation: fade-in-up 0.8s ease-out both;">
+        开源技术实践与分享平台
+      </p>
+      
+      <!-- 主标题 -->
+      <h1 class="apple-hero-title" style="margin-bottom: 1.5rem;">
+        让技术在分享中成长
+      </h1>
+      
+      <!-- 核心价值主张 -->
+      <p class="apple-hero-subtitle" style="max-width: 800px; margin: 0 auto 3rem;">
+        {{ site.slogan }}
+      </p>
+      
+      <!-- 技术方向标签 -->
+      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-bottom: 3rem; animation: fade-in-up 1s ease-out 0.3s both;">
+        <span style="padding: 0.5rem 1.25rem; background: rgba(107, 114, 128, 0.15); border: 1px solid rgba(107, 114, 128, 0.3); border-radius: 100px; color: #9CA3AF; font-size: 0.875rem;">Linux</span>
+        <span style="padding: 0.5rem 1.25rem; background: rgba(107, 114, 128, 0.15); border: 1px solid rgba(107, 114, 128, 0.3); border-radius: 100px; color: #9CA3AF; font-size: 0.875rem;">Git/GitHub</span>
+        <span style="padding: 0.5rem 1.25rem; background: rgba(107, 114, 128, 0.15); border: 1px solid rgba(107, 114, 128, 0.3); border-radius: 100px; color: #9CA3AF; font-size: 0.875rem;">开源项目</span>
+        <span style="padding: 0.5rem 1.25rem; background: rgba(107, 114, 128, 0.15); border: 1px solid rgba(107, 114, 128, 0.3); border-radius: 100px; color: #9CA3AF; font-size: 0.875rem;">Python/Java</span>
+        <span style="padding: 0.5rem 1.25rem; background: rgba(107, 114, 128, 0.15); border: 1px solid rgba(107, 114, 128, 0.3); border-radius: 100px; color: #9CA3AF; font-size: 0.875rem;">AI大模型</span>
+      </div>
+      
+      <!-- CTA 按钮 -->
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; animation: fade-in-up 1s ease-out 0.5s both;">
+        <a href="/posts" class="apple-button apple-button-primary">
+          <span>浏览技术文章</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+        <a href="/intro" class="apple-button apple-button-secondary">
+          <span>了解协会</span>
+        </a>
+      </div>
+      
+      <!-- 信任背书 -->
+      <p style="margin-top: 3rem; color: #6B7280; font-size: 0.9rem; animation: fade-in-up 1s ease-out 0.7s both;">
+        天津科技大学人工智能学院 | 指导教师：{{ site.guide_teacher }}（{{ site.guide_teacher_title }}）
+      </p>
+      
+    </div>
+  </div>
+</section>
+
+<!-- 核心价值区域 -->
+<section class="apple-feature-section apple-gradient-bg">
+  <div class="container">
+    
+    <div class="has-text-centered" style="margin-bottom: 5rem;">
+      <h2 class="apple-section-title">为什么关注我们</h2>
+      <p class="apple-section-subtitle" style="max-width: 700px; margin: 0 auto;">
+        开源是互联网的根基，技术分析是成长的捷径<br>
+        我们分享的不仅是代码，更是开源项目协作经验、社区贡献技巧、技术落地案例
+      </p>
+    </div>
+    
+    <div class="columns is-multiline is-variable is-8">
+      
+      <!-- 特色 1 -->
+      <div class="column is-4-desktop is-6-tablet" style="animation: fade-in-up 1s ease-out both;">
+        <div class="apple-card">
+          <span class="apple-card-icon">📚</span>
+          <h3 class="apple-card-title">交互式入门教程</h3>
+          <p class="apple-card-description">
+            自主构建的开源工具基础教程，覆盖Git、Linux、GitHub等核心技能，理论+实操，快速上手
+          </p>
+        </div>
+      </div>
+      
+      <!-- 特色 2 -->
+      <div class="column is-4-desktop is-6-tablet" style="animation: fade-in-up 1s ease-out 0.2s both;">
+        <div class="apple-card">
+          <span class="apple-card-icon">💻</span>
+          <h3 class="apple-card-title">开源项目案例库</h3>
+          <p class="apple-card-description">
+            内部协作项目+外部贡献成果，附完整代码链接，学习真实开源项目的开发流程与协作规范
+          </p>
+        </div>
+      </div>
+      
+      <!-- 特色 3 -->
+      <div class="column is-4-desktop is-6-tablet" style="animation: fade-in-up 1s ease-out 0.4s both;">
+        <div class="apple-card">
+          <span class="apple-card-icon">🎯</span>
+          <h3 class="apple-card-title">技术讲座精华</h3>
+          <p class="apple-card-description">
+            每月1-2场技术分享会，专家与骨干分享开源热点与实战经验，同步提供文字版技术分析
+          </p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- 最新技术文章推荐 -->
+<section class="section apple-gradient-bg" style="padding: 6rem 0;">
+  <div class="container">
+    <div class="has-text-centered" style="margin-bottom: 4rem;">
+      <h2 class="apple-section-title">最新技术分享</h2>
+      <p class="apple-section-subtitle">从入门到实战，帮你快速融入开源生态</p>
+    </div>
+    
+    <div class="columns is-multiline is-variable is-6">
+      {% assign featured_posts = site.posts | limit: 3 %}
+      {% for post in featured_posts %}
+        <div class="column is-4-desktop is-6-tablet">
+          <article class="apple-post-card">
+            <div class="apple-post-card-content">
+              <span class="apple-post-category">
+                {% if post.categories.first == 'frontend' %}
+                  🎨 前端技术
+                {% elsif post.categories.first == 'backend' %}
+                  ⚙️ 后端技术
+                {% elsif post.categories.first == 'design' %}
+                  ✨ 设计
+                {% else %}
+                  {{ post.categories | first }}
+                {% endif %}
+              </span>
+              
+              <h2 class="apple-post-title">
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              </h2>
+              
+              <div class="apple-post-excerpt">
+                {% if post.excerpt %}
+                  {{ post.excerpt | strip_html | truncatewords: 20 }}
+                {% else %}
+                  {{ post.content | strip_html | truncatewords: 20 }}
+                {% endif %}
+              </div>
+              
+              <div class="apple-post-meta">
+                <span>
+                  <i class="far fa-calendar"></i>
+                  {{ post.date | date: "%Y-%m-%d" }}
+                </span>
+              </div>
+            </div>
+          </article>
+        </div>
+      {% endfor %}
+    </div>
+    
+    <div class="has-text-centered" style="margin-top: 3rem;">
+      <a href="/posts" class="apple-button apple-button-secondary">
+        <span>查看全部文章</span>
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 统计数据 -->
+<section class="section apple-gradient-bg" style="padding: 6rem 0; background: rgba(15, 15, 15, 0.5);">
+  <div class="container">
+    <div class="columns is-multiline">
+      
+      <div class="column is-3">
+        <div class="apple-stat-card">
+          <div class="apple-stat-number">{{ site.posts.size }}+</div>
+          <div class="apple-stat-label">技术文章</div>
+        </div>
+      </div>
+      
+      <div class="column is-3">
+        <div class="apple-stat-card">
+          <div class="apple-stat-number">50+</div>
+          <div class="apple-stat-label">竞赛奖项</div>
+        </div>
+      </div>
+      
+      <div class="column is-3">
+        <div class="apple-stat-card">
+          <div class="apple-stat-number">100+</div>
+          <div class="apple-stat-label">活跃成员</div>
+        </div>
+      </div>
+      
+      <div class="column is-3">
+        <div class="apple-stat-card">
+          <div class="apple-stat-number">{{ site.founded_year }}</div>
+          <div class="apple-stat-label">成立年份</div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- CTA 区域 -->
+<section class="section apple-gradient-bg" style="padding: 8rem 0;">
+  <div class="container">
+    <div class="has-text-centered" style="max-width: 750px; margin: 0 auto;">
+      <h2 style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; color: #F9FAFB; margin-bottom: 1.5rem; line-height: 1.2;">
+        一起探索开源世界
+      </h2>
+      <p style="font-size: 1.125rem; color: #9CA3AF; margin-bottom: 3rem; line-height: 1.7;">
+        从代码贡献到技术分享，从基础入门到项目实战<br>
+        我们帮你快速融入开源生态，提升求职与竞赛核心竞争力
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="/posts" class="apple-button apple-button-primary">
+          <span>浏览技术文章</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+        <a href="/intro" class="apple-button apple-button-secondary">
+          <span>了解协会详情</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{ content }}

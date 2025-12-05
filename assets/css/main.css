@@ -1,0 +1,392 @@
+---
+---
+/* ========================================
+   技术社团官网 - 灰色系主题样式
+   基于 Bulma 框架自定义
+   ======================================== */
+
+/* ===== 颜色系统 ===== */
+:root {
+  /* 主色调 - 灰色系 */
+  --primary-dark: #1F2937;      /* 深灰 */
+  --primary-gray: #374151;      /* 中灰 */
+  --primary-light: #6B7280;     /* 浅灰 */
+  
+  /* 背景色 */
+  --bg-dark: #111827;           /* 深色背景 */
+  --bg-main: #1F2937;           /* 主背景 */
+  --bg-secondary: #374151;      /* 次要背景 */
+  --bg-light: #F9FAFB;          /* 浅色背景 */
+  
+  /* 文字色 */
+  --text-primary: #F9FAFB;      /* 主文字（浅色） */
+  --text-secondary: #D1D5DB;    /* 次要文字 */
+  --text-dark: #1F2937;         /* 深色文字 */
+  --text-gray: #9CA3AF;         /* 灰色文字 */
+  
+  /* 强调色 */
+  --accent-light: #E5E7EB;      /* 浅强调 */
+  --accent-medium: #9CA3AF;     /* 中强调 */
+  --accent-dark: #4B5563;       /* 深强调 */
+  
+  /* 功能色 */
+  --success: #10B981;           /* 成功/绿色 */
+  --warning: #F59E0B;           /* 警告/橙色 */
+  --danger: #EF4444;            /* 错误/红色 */
+  --info: #8B5CF6;              /* 信息/紫色 */
+  
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  
+  /* 边框 */
+  --border-color: #374151;
+  --border-radius: 8px;
+}
+
+/* ===== 全局样式重置 ===== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== 覆盖 Bulma 默认配色 ===== */
+.has-background-dark {
+  background-color: var(--bg-dark) !important;
+}
+
+.has-background-primary {
+  background-color: var(--primary-gray) !important;
+}
+
+.has-text-primary {
+  color: var(--text-primary) !important;
+}
+
+.has-text-grey-light {
+  color: var(--text-secondary) !important;
+}
+
+/* ===== 自定义卡片样式 ===== */
+.custom-card {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.custom-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--accent-medium);
+}
+
+/* ===== 导航栏样式 ===== */
+.navbar {
+  background-color: var(--bg-main);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+}
+
+.navbar-brand .navbar-item {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.navbar-menu {
+  background-color: var(--bg-main);
+}
+
+.navbar-item {
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+}
+
+.navbar-item:hover,
+.navbar-item.is-active {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* ===== Hero 区域样式 ===== */
+.hero {
+  background: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary-dark) 100%);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.hero-body {
+  padding: 6rem 1.5rem;
+}
+
+.hero-title {
+  color: var(--text-primary);
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+/* ===== 按钮样式 ===== */
+.button {
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.button.is-primary {
+  background-color: var(--primary-light);
+  border-color: var(--primary-light);
+  color: var(--text-primary);
+}
+
+.button.is-primary:hover {
+  background-color: var(--accent-medium);
+  border-color: var(--accent-medium);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.button.is-ghost {
+  background-color: transparent;
+  border: 2px solid var(--accent-medium);
+  color: var(--text-secondary);
+}
+
+.button.is-ghost:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+
+/* ===== 文章卡片样式 ===== */
+.post-card {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--accent-medium);
+}
+
+.post-card-title {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.post-card-title a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.post-card-title a:hover {
+  color: var(--accent-light);
+}
+
+.post-card-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-gray);
+}
+
+.post-card-excerpt {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.post-card-category {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.post-card-category:hover {
+  background-color: var(--accent-dark);
+  color: var(--text-primary);
+}
+
+/* ===== 分类卡片样式 ===== */
+.category-card {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--accent-medium);
+  background-color: var(--bg-secondary);
+}
+
+.category-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.category-name {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.category-count {
+  color: var(--text-gray);
+  font-size: 0.875rem;
+}
+
+/* ===== 时间线样式 ===== */
+.timeline-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.3s ease;
+}
+
+.timeline-item:hover {
+  background-color: var(--bg-secondary);
+  padding-left: 1rem;
+}
+
+.timeline-date {
+  color: var(--text-gray);
+  font-size: 0.875rem;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.timeline-content a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.timeline-content a:hover {
+  color: var(--accent-light);
+}
+
+/* ===== 页脚样式 ===== */
+.footer {
+  background-color: var(--bg-main);
+  border-top: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 3rem 1.5rem;
+  margin-top: 4rem;
+}
+
+.footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: var(--text-primary);
+}
+
+/* ===== 响应式设计 ===== */
+@media screen and (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .hero-body {
+    padding: 3rem 1.5rem;
+  }
+}
+
+/* ===== 内容区域样式 ===== */
+.content {
+  color: var(--text-secondary);
+}
+
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+  color: var(--text-primary);
+}
+
+.content a {
+  color: var(--info);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.content a:hover {
+  border-bottom-color: var(--info);
+}
+
+/* ===== 代码块样式（配合 Prism.js） ===== */
+.content pre {
+  background-color: var(--bg-dark);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.content code {
+  background-color: var(--bg-secondary);
+  color: var(--accent-light);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.875em;
+}
+
+.content pre code {
+  background-color: transparent;
+  padding: 0;
+}
