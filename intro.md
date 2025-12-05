@@ -225,11 +225,11 @@ permalink: /intro/
               <strong style="color: #D1D5DB;">活跃会员标准：</strong>一学期参与 25% 以上正式活动，或参与 1 个以上长期开源项目，即可享有表决权和选举权。
             </p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-              <a href="/posts" class="apple-button apple-button-primary">
+              <a href="{{ '/posts' | relative_url }}" class="apple-button apple-button-primary">
                 <span>浏览技术文章</span>
                 <i class="fas fa-arrow-right"></i>
               </a>
-              <a href="/about" class="apple-button apple-button-secondary">
+              <a href="{{ '/about' | relative_url }}" class="apple-button apple-button-secondary">
                 <span>联系我们</span>
               </a>
             </div>

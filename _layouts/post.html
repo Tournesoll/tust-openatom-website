@@ -32,7 +32,7 @@ layout: default
               <span>
                 <i class="far fa-folder"></i>
                 {% for category in page.categories %}
-                  <a href="/posts#{{ category | slugify }}" style="color: var(--info); text-decoration: none;">
+                  <a href="{{ '/posts' | relative_url }}#{{ category | slugify }}" style="color: var(--info); text-decoration: none;">
                     {% if category == 'frontend' %}
                       🎨 前端技术
                     {% elsif category == 'backend' %}

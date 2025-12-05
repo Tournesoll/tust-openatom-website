@@ -3,5 +3,6 @@ _site/
 .jekyll-cache/
 .jekyll-metadata
 .bundle/
-vendor/
+# 只忽略根目录的 vendor，不忽略 assets/vendor
+/vendor/
 Gemfile.lock

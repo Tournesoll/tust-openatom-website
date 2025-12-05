@@ -79,11 +79,11 @@ permalink: /about/
               无论是技术问题、合作咨询还是加入协会，都欢迎联系我们
             </p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-              <a href="/" class="apple-button apple-button-primary">
+              <a href="{{ '/' | relative_url }}" class="apple-button apple-button-primary">
                 <i class="fas fa-home"></i>
                 <span>返回首页</span>
               </a>
-              <a href="/intro" class="apple-button apple-button-secondary">
+              <a href="{{ '/intro' | relative_url }}" class="apple-button apple-button-secondary">
                 <span>了解协会</span>
               </a>
             </div>

@@ -46,6 +46,10 @@ url: "https://Tournesoll.github.io" # GitHub 用户名
 paginate: 9
 paginate_path: "/page:num/"
 
+# 包含文件（确保 assets 目录被处理）
+include:
+  - assets
+
 # 排除文件
 exclude:
   - Gemfile

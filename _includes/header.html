@@ -1,7 +1,7 @@
 <nav class="navbar" role="navigation" aria-label="main navigation" style="background-color: rgba(31, 41, 55, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
   <div class="container">
     <div class="navbar-brand">
-      <a class="navbar-item" href="/" style="font-weight: 600; font-size: 1.1rem;">
+      <a class="navbar-item" href="{{ '/' | relative_url }}" style="font-weight: 600; font-size: 1.1rem;">
         开放原子开源协会
       </a>
 
@@ -14,19 +14,19 @@
 
     <div id="navbarMenu" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="/">
+        <a class="navbar-item" href="{{ '/' | relative_url }}">
           <span>首页</span>
         </a>
 
-        <a class="navbar-item" href="/posts">
+        <a class="navbar-item" href="{{ '/posts' | relative_url }}">
           <span>技术文章</span>
         </a>
 
-        <a class="navbar-item" href="/intro">
+        <a class="navbar-item" href="{{ '/intro' | relative_url }}">
           <span>社团简介</span>
         </a>
 
-        <a class="navbar-item" href="/about">
+        <a class="navbar-item" href="{{ '/about' | relative_url }}">
           <span>联系我们</span>
         </a>
 

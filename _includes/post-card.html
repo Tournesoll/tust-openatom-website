@@ -34,7 +34,7 @@
   <div>
     {% if post.categories %}
       {% for category in post.categories limit:1 %}
-        <a href="/categories/{{ category | slugify }}" class="post-card-category">
+        <a href="{{ '/posts' | relative_url }}#{{ category | slugify }}" class="post-card-category">
           {{ category }}
         </a>
       {% endfor %}
