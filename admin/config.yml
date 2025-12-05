@@ -11,6 +11,8 @@ backend:
   # 使用 PKCE 认证，直接调用 GitHub OAuth（不需要代理服务器）
   auth_type: pkce                          # 使用 PKCE 认证（更安全，不需要 Client Secret）
   auth_scope: repo                         # 需要的权限范围：repo（读写仓库）
+  # 注意：对于 PKCE 认证，不需要设置 base_url 和 auth_endpoint
+  # Decap CMS 会自动使用 GitHub 的 OAuth 端点
   # 重要：使用 PKCE 认证时，需要在 GitHub 创建 OAuth App
   # 1. 访问：https://github.com/settings/developers
   # 2. 点击 "New OAuth App"

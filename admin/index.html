@@ -97,17 +97,15 @@
         }
 
         // 2. 检查 CMS 是否加载
-        if (typeof window.CMS === 'undefined' && typeof CMS === 'undefined') {
+        if (typeof window.CMS === 'undefined' && typeof window.decapCMS === 'undefined') {
           console.log('等待 CMS 脚本加载...');
           return false;
         }
 
-        // 3. Decap CMS 使用 PKCE 认证，直接调用 GitHub OAuth
-        // 不需要 Netlify Identity，PKCE 会在客户端处理 OAuth 流程
-
-        // 4. CMS 会自动初始化并挂载到 #nc-root
+        // 3. Decap CMS 会自动初始化并挂载到 #nc-root
         // 配置文件会自动从 /admin/config.yml 加载
-        console.log('Decap CMS 初始化完成');
+        // 使用 PKCE 认证时，会自动使用 GitHub OAuth，不会使用 Netlify
+        console.log('Decap CMS 初始化完成（使用 GitHub OAuth PKCE）');
         hideLoading();
         return true;
       }
