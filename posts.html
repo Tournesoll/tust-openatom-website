@@ -35,9 +35,18 @@ permalink: /posts/
           全部文章
         </button>
         {% for category in site.categories %}
-        <button class="apple-filter-button" data-category="{{ category }}">
-          {{ category }}
-        </button>
+          {% assign category_name = category[0] %}
+          <button class="apple-filter-button" data-category="{{ category_name }}">
+            {% if category_name == 'frontend' %}
+              🎨 前端技术
+            {% elsif category_name == 'backend' %}
+              ⚙️ 后端技术
+            {% elsif category_name == 'design' %}
+              ✨ 设计
+            {% else %}
+              {{ category_name }}
+            {% endif %}
+          </button>
         {% endfor %}
       </div>
     </div>
@@ -123,10 +132,13 @@ permalink: /posts/
       
       postItems.forEach(item => {
         const itemCategory = item.getAttribute('data-category');
-        const postTitle = item.querySelector('.apple-post-title a')?.textContent.toLowerCase() || '';
-        const postExcerpt = item.querySelector('.apple-post-excerpt')?.textContent.toLowerCase() || '';
-        const postTags = Array.from(item.querySelectorAll('.tag')).map(t => t.textContent.toLowerCase()).join(' ');
-        const searchText = `${postTitle} ${postExcerpt} ${postTags}`;
+        const postTitleEl = item.querySelector('.apple-post-title a');
+        const postExcerptEl = item.querySelector('.apple-post-excerpt');
+        const postTitle = postTitleEl ? postTitleEl.textContent.toLowerCase() : '';
+        const postExcerpt = postExcerptEl ? postExcerptEl.textContent.toLowerCase() : '';
+        const postCategory = item.querySelector('.apple-post-category');
+        const postCategoryText = postCategory ? postCategory.textContent.toLowerCase() : '';
+        const searchText = `${postTitle} ${postExcerpt} ${postCategoryText}`;
         
         // 分类筛选
         const categoryMatch = currentCategory === 'all' || itemCategory === currentCategory;
