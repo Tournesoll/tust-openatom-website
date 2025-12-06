@@ -1,161 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>内容管理后台 - 天津科技大学开放原子开源协会</title>
-
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: #f5f5f5;
-    }
-
-    #nc-root {
-      min-height: 100vh;
-    }
-
-    .loading {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      color: #666;
-      font-size: 16px;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: #f5f5f5;
-      z-index: 9999;
-    }
-
-    .error {
-      color: #d32f2f;
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #ffebee;
-      border-radius: 4px;
-      max-width: 600px;
-      text-align: left;
-      white-space: pre-wrap;
-    }
-  </style>
+  <script src="https://unpkg.com/@sveltia/cms@latest/dist/sveltia-cms.js"></script>
 </head>
-
 <body>
-  <!-- Decap CMS 挂载点 - 必须在脚本之前 -->
-  <div id="nc-root"></div>
-
-  <!-- 加载提示 -->
-  <div id="loading" class="loading">
-    <div>正在加载管理后台...</div>
-    <div id="error" class="error" style="display: none;"></div>
-  </div>
-
-  <!-- Decap CMS - 使用 PKCE 认证，直接调用 GitHub OAuth，不需要 Netlify Identity -->
-  <script src="https://unpkg.com/decap-cms@^3.9.0/dist/decap-cms.js"></script>
-
   <script>
-    (function () {
-      'use strict';
-
-      const baseurl = '/tust-openatom-website';
-      const configPath = baseurl + '/admin/config.yml';
-
-      function showError(message) {
-        const errorDiv = document.getElementById('error');
-        if (errorDiv) {
-          errorDiv.textContent = message;
-          errorDiv.style.display = 'block';
-        }
-        console.error('Decap CMS Error:', message);
-      }
-
-      function hideLoading() {
-        const loading = document.getElementById('loading');
-        if (loading) {
-          setTimeout(() => {
-            loading.style.display = 'none';
-          }, 1000);
-        }
-      }
-
-      // 确保 DOM 和脚本都准备好后再初始化
-      function initCMS() {
-        // 1. 检查挂载点是否存在
-        const rootElement = document.getElementById('nc-root');
-        if (!rootElement) {
-          showError('错误：找不到 CMS 挂载点 #nc-root\n请刷新页面重试');
-          return false;
-        }
-
-        // 2. 检查 CMS 是否加载
-        if (typeof window.CMS === 'undefined' && typeof window.decapCMS === 'undefined') {
-          console.log('等待 CMS 脚本加载...');
-          return false;
-        }
-
-        // 3. Decap CMS 会自动初始化并挂载到 #nc-root
-        // 配置文件会自动从 /admin/config.yml 加载
-        // 使用 PKCE 认证时，会自动使用 GitHub OAuth，不会使用 Netlify
-        console.log('Decap CMS 初始化完成（使用 GitHub OAuth PKCE）');
-        hideLoading();
-        return true;
-      }
-
-      // 等待 DOM 和脚本都准备好
-      function waitAndInit() {
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', function () {
-            setTimeout(function () {
-              if (!initCMS()) {
-                // 如果初始化失败，继续等待
-                setTimeout(waitAndInit, 200);
-              }
-            }, 100);
-          });
-        } else {
-          // DOM 已准备好
-          setTimeout(function () {
-            if (!initCMS()) {
-              // 如果初始化失败，继续等待
-              setTimeout(waitAndInit, 200);
-            }
-          }, 100);
-        }
-      }
-
-      // 页面加载完成后也检查一次
-      window.addEventListener('load', function () {
-        setTimeout(function () {
-          if (!initCMS()) {
-            // 最多等待 10 秒
-            let attempts = 0;
-            const maxAttempts = 50; // 50 * 200ms = 10秒
-            const retry = setInterval(function () {
-              attempts++;
-              if (initCMS() || attempts >= maxAttempts) {
-                clearInterval(retry);
-                if (attempts >= maxAttempts) {
-                  showError('CMS 初始化超时\n请检查：\n1. 网络连接\n2. 浏览器控制台错误\n3. 配置文件是否正确');
-                }
-              }
-            }, 200);
-          }
-        }, 500);
-      });
-
-      // 开始初始化流程
-      waitAndInit();
-    })();
+    SveltiaCMS.init({
+      config: '/tust-openatom-website/admin/config.yml'
+    });
   </script>
 </body>
-
 </html>
+
