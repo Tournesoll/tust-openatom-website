@@ -35,6 +35,7 @@ router.get('/', requireAuth, async (req, res) => {
           author: parsed.attributes.author || '',
           excerpt: parsed.attributes.excerpt || '',
           layout: parsed.attributes.layout || 'post',
+          published: parsed.attributes.published !== false, // 默认为true
         });
       }
     }
@@ -70,7 +71,7 @@ router.get('/:filename', requireAuth, async (req, res) => {
 // 创建文章
 router.post('/', requireAuth, async (req, res) => {
   try {
-    const { title, date, categories, tags, author, excerpt, body, layout } = req.body;
+    const { title, date, categories, tags, author, excerpt, body, layout, published } = req.body;
     
     // 生成文件名
     const dateStr = date ? new Date(date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
@@ -83,9 +84,10 @@ layout: ${layout || 'post'}
 title: "${title}"
 date: ${date || new Date().toISOString()}
 categories: [${categories || 'frontend'}]
-tags: [${(tags || []).join(', ')}]
+tags: [${(tags || []).map(t => `"${t}"`).join(', ')}]
 author: ${author || '技术社团'}
 ${excerpt ? `excerpt: "${excerpt}"` : ''}
+${published === false ? 'published: false' : ''}
 ---
 
 ${body || ''}
@@ -110,7 +112,7 @@ ${body || ''}
 // 更新文章
 router.put('/:filename', requireAuth, async (req, res) => {
   try {
-    const { title, date, categories, tags, author, excerpt, body, layout } = req.body;
+    const { title, date, categories, tags, author, excerpt, body, layout, published } = req.body;
     
     // 构建 Front Matter
     const frontMatterContent = `---
@@ -118,9 +120,10 @@ layout: ${layout || 'post'}
 title: "${title}"
 date: ${date || new Date().toISOString()}
 categories: [${categories || 'frontend'}]
-tags: [${(tags || []).join(', ')}]
+tags: [${(tags || []).map(t => `"${t}"`).join(', ')}]
 author: ${author || '技术社团'}
 ${excerpt ? `excerpt: "${excerpt}"` : ''}
+${published === false ? 'published: false' : ''}
 ---
 
 ${body || ''}

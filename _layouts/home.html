@@ -113,6 +113,7 @@ layout: default
     <div class="columns is-multiline is-variable is-6">
       {% assign featured_posts = site.posts | limit: 3 %}
       {% for post in featured_posts %}
+        {% unless post.published == false %}
         <div class="column is-4-desktop is-6-tablet">
           <article class="apple-post-card">
             <div class="apple-post-card-content">
@@ -149,6 +150,7 @@ layout: default
             </div>
           </article>
         </div>
+        {% endunless %}
       {% endfor %}
     </div>
     

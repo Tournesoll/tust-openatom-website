@@ -38,6 +38,7 @@ permalink: /posts/
     <!-- 文章网格 -->
     <div class="columns is-multiline is-variable is-6" id="posts-grid">
       {% for post in site.posts %}
+        {% unless post.published == false %}
         <div class="column is-4-desktop is-6-tablet post-item" data-category="{{ post.categories | first }}">
           <article class="apple-post-card">
             <div class="apple-post-card-content">
@@ -86,6 +87,7 @@ permalink: /posts/
             </div>
           </article>
         </div>
+        {% endunless %}
       {% endfor %}
     </div>
     
