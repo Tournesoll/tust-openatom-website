@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setupTagsManager();
   setupEditorTabs();
   setupFilters();
+  setupSearch();
+  loadCategories();
 });
 
 // 检查认证状态
@@ -249,14 +251,52 @@ function switchTab(tabName) {
 function setupFilters() {
   document.getElementById('filter-published').addEventListener('change', applyFilters);
   document.getElementById('filter-category').addEventListener('change', applyFilters);
-  document.getElementById('search-input').addEventListener('input', applyFilters);
+}
+
+// 设置搜索功能
+function setupSearch() {
+  const searchInput = document.getElementById('search-input');
+  const searchClear = document.getElementById('search-clear');
+  
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      if (e.target.value) {
+        searchClear.style.display = 'block';
+      } else {
+        searchClear.style.display = 'none';
+      }
+      applyFilters();
+    });
+    
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        applyFilters();
+      }
+    });
+  }
+  
+  if (searchClear) {
+    searchClear.addEventListener('click', () => {
+      searchInput.value = '';
+      searchClear.style.display = 'none';
+      applyFilters();
+    });
+  }
+  
+  // 管理标签按钮
+  const manageTagsBtn = document.getElementById('manage-tags-btn');
+  if (manageTagsBtn) {
+    manageTagsBtn.addEventListener('click', openTagsModal);
+  }
 }
 
 // 应用筛选
 function applyFilters() {
   const publishedFilter = document.getElementById('filter-published').value;
   const categoryFilter = document.getElementById('filter-category').value;
-  const searchQuery = document.getElementById('search-input').value.toLowerCase();
+  const searchInput = document.getElementById('search-input');
+  const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : '';
   
   filteredPosts = posts.filter(post => {
     // 发布状态筛选
@@ -271,7 +311,8 @@ function applyFilters() {
     
     // 搜索筛选
     if (searchQuery) {
-      const searchText = `${post.title} ${post.excerpt || ''} ${post.tags.join(' ')}`.toLowerCase();
+      const tags = Array.isArray(post.tags) ? post.tags : [];
+      const searchText = `${post.title} ${post.excerpt || ''} ${tags.join(' ')} ${post.author || ''}`.toLowerCase();
       if (!searchText.includes(searchQuery)) return false;
     }
     
@@ -782,5 +823,225 @@ async function commitAndPush(message) {
   } catch (error) {
     console.error('Commit error:', error);
     alert('推送失败：' + error.message);
+  }
+}
+
+// 加载分类列表
+async function loadCategories() {
+  try {
+    const response = await fetch(`${API_BASE}/tags/categories`);
+    const data = await response.json();
+    
+    const select = document.getElementById('filter-category');
+    if (select && data.categories) {
+      select.innerHTML = '<option value="all">全部分类</option>';
+      data.categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        select.appendChild(option);
+      });
+    }
+  } catch (error) {
+    console.error('Load categories error:', error);
+  }
+}
+
+// 标签管理相关变量
+let allTags = [];
+let popularTags = [];
+let categories = [];
+
+// 打开标签管理模态框
+async function openTagsModal() {
+  const modal = document.getElementById('tags-modal');
+  if (!modal) return;
+  
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  
+  await loadTagsData();
+  renderTagsModal();
+  setupTagsModalEvents();
+}
+
+// 加载标签数据
+async function loadTagsData() {
+  try {
+    const [categoriesRes, allTagsRes, popularRes] = await Promise.all([
+      fetch(`${API_BASE}/tags/categories`),
+      fetch(`${API_BASE}/tags/all`),
+      fetch(`${API_BASE}/tags/popular`)
+    ]);
+    
+    const categoriesData = await categoriesRes.json();
+    const allTagsData = await allTagsRes.json();
+    const popularData = await popularRes.json();
+    
+    categories = categoriesData.categories || [];
+    allTags = allTagsData.tags || [];
+    popularTags = popularData.tags || [];
+  } catch (error) {
+    console.error('Load tags data error:', error);
+    alert('加载标签数据失败');
+  }
+}
+
+// 渲染标签管理界面
+function renderTagsModal() {
+  const categoriesList = document.getElementById('categories-list');
+  if (categoriesList) {
+    categoriesList.innerHTML = categories.length > 0 ? categories.map(category => {
+      const safe = category.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+      return `<span class="tag-item">${category}<button class="delete" onclick="deleteCategory('${safe}')"></button></span>`;
+    }).join('') : '<p style="color: #9CA3AF;">暂无分类</p>';
+  }
+  
+  const allTagsList = document.getElementById('all-tags-list');
+  if (allTagsList) {
+    allTagsList.innerHTML = allTags.length > 0 ? allTags.map(tag => {
+      const isSelected = popularTags.includes(tag);
+      const safe = tag.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+      return `<span class="tag-item ${isSelected ? 'selected' : ''}" data-tag="${safe}" onclick="togglePopularTag('${safe}')">${tag}</span>`;
+    }).join('') : '<p style="color: #9CA3AF;">暂无标签</p>';
+  }
+  
+  const popularTagsList = document.getElementById('popular-tags-list');
+  if (popularTagsList) {
+    popularTagsList.innerHTML = popularTags.length > 0 ? popularTags.map(tag => {
+      const safe = tag.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+      return `<span class="tag-item selected">${tag}<button class="delete" onclick="removePopularTag('${safe}')"></button></span>`;
+    }).join('') : '<p style="color: #9CA3AF;">未选择热门标签</p>';
+  }
+}
+
+// 设置标签管理模态框事件
+function setupTagsModalEvents() {
+  const addCategoryBtn = document.getElementById('add-category-btn');
+  const newCategoryInput = document.getElementById('new-category-input');
+  const saveTagsBtn = document.getElementById('save-tags-btn');
+  
+  if (addCategoryBtn && newCategoryInput) {
+    addCategoryBtn.onclick = async () => {
+      const name = newCategoryInput.value.trim();
+      if (name) {
+        await addCategory(name);
+        newCategoryInput.value = '';
+      }
+    };
+    newCategoryInput.onkeypress = async (e) => {
+      if (e.key === 'Enter' && e.target.value.trim()) {
+        await addCategory(e.target.value.trim());
+        e.target.value = '';
+      }
+    };
+  }
+  
+  if (saveTagsBtn) {
+    saveTagsBtn.onclick = saveTags;
+  }
+  
+  const closeTagsModal = () => {
+    const modal = document.getElementById('tags-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+  };
+  
+  const cancelBtn = document.getElementById('cancel-tags-btn');
+  const bg = document.getElementById('tags-modal-background');
+  const closeBtn = document.getElementById('tags-modal-close');
+  
+  if (cancelBtn) cancelBtn.onclick = closeTagsModal;
+  if (bg) bg.onclick = closeTagsModal;
+  if (closeBtn) closeBtn.onclick = closeTagsModal;
+}
+
+// 添加分类
+async function addCategory(name) {
+  try {
+    const response = await fetch(`${API_BASE}/tags/categories`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name }),
+    });
+    
+    const result = await response.json();
+    if (result.success) {
+      categories = result.categories;
+      renderTagsModal();
+      await loadCategories();
+    } else {
+      alert('添加失败：' + (result.error || '未知错误'));
+    }
+  } catch (error) {
+    console.error('Add category error:', error);
+    alert('添加失败：' + error.message);
+  }
+}
+
+// 删除分类
+async function deleteCategory(name) {
+  if (!confirm(`确定要删除分类"${name}"吗？`)) return;
+  
+  try {
+    const response = await fetch(`${API_BASE}/tags/categories/${encodeURIComponent(name)}`, {
+      method: 'DELETE',
+    });
+    
+    const result = await response.json();
+    if (result.success) {
+      categories = result.categories;
+      renderTagsModal();
+      await loadCategories();
+    } else {
+      alert('删除失败：' + (result.error || '未知错误'));
+    }
+  } catch (error) {
+    console.error('Delete category error:', error);
+    alert('删除失败：' + error.message);
+  }
+}
+
+// 切换热门标签
+function togglePopularTag(tag) {
+  if (popularTags.includes(tag)) {
+    popularTags = popularTags.filter(t => t !== tag);
+  } else {
+    popularTags.push(tag);
+  }
+  renderTagsModal();
+}
+
+// 移除热门标签
+function removePopularTag(tag) {
+  popularTags = popularTags.filter(t => t !== tag);
+  renderTagsModal();
+}
+
+// 保存标签配置
+async function saveTags() {
+  try {
+    const response = await fetch(`${API_BASE}/tags/popular`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tags: popularTags }),
+    });
+    
+    const result = await response.json();
+    if (result.success) {
+      alert('保存成功！');
+      const modal = document.getElementById('tags-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    } else {
+      alert('保存失败：' + (result.error || '未知错误'));
+    }
+  } catch (error) {
+    console.error('Save tags error:', error);
+    alert('保存失败：' + error.message);
   }
 }

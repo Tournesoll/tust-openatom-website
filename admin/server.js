@@ -7,6 +7,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const postsRoutes = require('./routes/posts');
 const gitRoutes = require('./routes/git');
+const tagsRoutes = require('./routes/tags');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -43,6 +44,7 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/git', gitRoutes);
+app.use('/api/tags', tagsRoutes);
 
 // 主页面
 app.get('/', (req, res) => {

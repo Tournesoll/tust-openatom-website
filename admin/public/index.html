@@ -69,6 +69,17 @@
     <!-- 主内容区 -->
     <section class="section">
       <div class="container">
+        <!-- 搜索栏 - 苹果风格 -->
+        <div class="search-container">
+          <div class="search-box">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="search-input" class="search-input" placeholder="搜索文章标题、内容、标签...">
+            <button class="search-clear" id="search-clear" style="display: none;">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
         <!-- 筛选栏 -->
         <div class="box mb-5">
           <div class="field is-grouped is-grouped-multiline">
@@ -85,14 +96,14 @@
               <div class="select">
                 <select id="filter-category">
                   <option value="all">全部分类</option>
-                  <option value="frontend">前端技术</option>
-                  <option value="backend">后端技术</option>
-                  <option value="design">设计</option>
                 </select>
               </div>
             </div>
             <div class="control">
-              <input class="input" type="text" id="search-input" placeholder="搜索文章...">
+              <button class="button is-light" id="manage-tags-btn">
+                <span class="icon"><i class="fas fa-tags"></i></span>
+                <span>管理标签</span>
+              </button>
             </div>
           </div>
         </div>
