@@ -5,14 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>内容管理后台 - 天津科技大学开放原子开源协会</title>
-  <script src="https://unpkg.com/@sveltia/cms@latest/dist/sveltia-cms.js"></script>
-</head>
-<body>
-  <script>
-    SveltiaCMS.init({
-      config: '/tust-openatom-website/admin/config.yml'
+  <script type="module">
+    import { init } from 'https://cdn.jsdelivr.net/npm/@sveltia/cms@latest/dist/index.js';
+    
+    init({
+      config: '/tust-openatom-website/admin/config.yml',
+      basePath: '/tust-openatom-website/admin',
     });
   </script>
+</head>
+<body>
+  <div id="sveltia-cms-root"></div>
 </body>
 </html>
 

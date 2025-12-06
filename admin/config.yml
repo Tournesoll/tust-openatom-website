@@ -6,7 +6,7 @@
 # 后端配置 - GitHub 后端
 backend:
   name: github
-  repo: Tournesoll/tust-openatom-website  # GitHub 仓库：用户名/仓库名
+  repo: Tournesoll/tust-openatom-website  # GitHub 仓库：用户名/仓库名（注意大小写）
   branch: main                            # 分支名称
   base_url: https://api.github.com        # GitHub API 地址
   auth_endpoint: https://sveltia-cms-auth.2302626736.workers.dev  # OAuth 代理地址
