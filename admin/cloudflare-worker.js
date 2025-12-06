@@ -86,21 +86,38 @@ export default {
             }
         }
 
-        // 处理 OAuth 授权请求
-        if (url.pathname === '/authorize') {
-            const redirectUri = url.searchParams.get('redirect_uri') || `${url.origin}/callback`;
-            const state = url.searchParams.get('state') || '';
-
-            const authUrl = new URL('https://github.com/login/oauth/authorize');
-            authUrl.searchParams.set('client_id', env.GITHUB_CLIENT_ID);
-            authUrl.searchParams.set('redirect_uri', redirectUri);
-            authUrl.searchParams.set('scope', 'repo');
-            if (state) {
-                authUrl.searchParams.set('state', state);
-            }
-
-            return Response.redirect(authUrl.toString(), 302);
-        }
+    // 处理 OAuth 授权请求
+    if (url.pathname === '/authorize' || url.pathname === '/auth') {
+      const redirectUri = url.searchParams.get('redirect_uri') || `${url.origin}/callback`;
+      const state = url.searchParams.get('state') || '';
+      
+      const authUrl = new URL('https://github.com/login/oauth/authorize');
+      authUrl.searchParams.set('client_id', env.GITHUB_CLIENT_ID);
+      authUrl.searchParams.set('redirect_uri', redirectUri);
+      authUrl.searchParams.set('scope', 'repo');
+      if (state) {
+        authUrl.searchParams.set('state', state);
+      }
+      
+      return Response.redirect(authUrl.toString(), 302);
+    }
+    
+    // Decap CMS 使用的端点
+    if (url.pathname === '/auth') {
+      // 处理 Decap CMS 的认证请求
+      const redirectUri = url.searchParams.get('redirect_uri') || `${url.origin}/callback`;
+      const state = url.searchParams.get('state') || '';
+      
+      const authUrl = new URL('https://github.com/login/oauth/authorize');
+      authUrl.searchParams.set('client_id', env.GITHUB_CLIENT_ID);
+      authUrl.searchParams.set('redirect_uri', redirectUri);
+      authUrl.searchParams.set('scope', 'repo');
+      if (state) {
+        authUrl.searchParams.set('state', state);
+      }
+      
+      return Response.redirect(authUrl.toString(), 302);
+    }
 
         // 健康检查
         if (url.pathname === '/health') {

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jekyll 文章管理后台</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 登录界面 -->
+  <div id="login-screen" class="screen">
+    <div class="login-container">
+      <h1>Jekyll 文章管理后台</h1>
+      <p>使用 GitHub 账号登录以管理文章</p>
+      <button id="login-btn" class="btn btn-primary">使用 GitHub 登录</button>
+    </div>
+  </div>
+
+  <!-- 主界面 -->
+  <div id="main-screen" class="screen hidden">
+    <!-- 顶部导航 -->
+    <header class="header">
+      <h1>文章管理</h1>
+      <div class="header-actions">
+        <span id="user-info"></span>
+        <button id="pull-btn" class="btn btn-secondary">拉取更新</button>
+        <button id="new-post-btn" class="btn btn-primary">新建文章</button>
+        <button id="logout-btn" class="btn btn-outline">登出</button>
+      </div>
+    </header>
+
+    <!-- 文章列表 -->
+    <div class="container">
+      <div id="posts-list" class="posts-list">
+        <div class="loading">加载中...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 编辑文章模态框 -->
+  <div id="edit-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">新建文章</h2>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="post-form">
+          <div class="form-group">
+            <label>标题 *</label>
+            <input type="text" id="post-title" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>发布日期 *</label>
+              <input type="datetime-local" id="post-date" required>
+            </div>
+            <div class="form-group">
+              <label>分类 *</label>
+              <select id="post-categories" required>
+                <option value="frontend">前端技术</option>
+                <option value="backend">后端技术</option>
+                <option value="design">设计</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>标签（用逗号分隔）</label>
+            <input type="text" id="post-tags" placeholder="标签1, 标签2">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>作者</label>
+              <input type="text" id="post-author" value="技术社团">
+            </div>
+            <div class="form-group">
+              <label>布局</label>
+              <input type="text" id="post-layout" value="post" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>摘要</label>
+            <textarea id="post-excerpt" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label>正文（Markdown） *</label>
+            <div class="editor-container">
+              <textarea id="post-body" rows="20" required></textarea>
+              <div id="preview" class="preview"></div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="button" id="save-and-push-btn" class="btn btn-success">保存并推送</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
+

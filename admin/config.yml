@@ -1,15 +1,19 @@
 # ============================================
-# Sveltia CMS 配置文件
+# Decap CMS 配置文件
 # 天津科技大学开放原子开源协会 - 内容管理后台
+# 使用 Cloudflare Workers 作为 OAuth 代理
 # ============================================
 
 # 后端配置 - GitHub 后端
 backend:
   name: github
-  repo: Tournesoll/tust-openatom-website  # GitHub 仓库：用户名/仓库名（注意大小写）
+  repo: Tournesoll/tust-openatom-website  # GitHub 仓库：用户名/仓库名
   branch: main                            # 分支名称
   base_url: https://api.github.com        # GitHub API 地址
-  auth_endpoint: https://sveltia-cms-auth.2302626736.workers.dev  # OAuth 代理地址
+  # 使用 Cloudflare Workers 作为 OAuth 代理（替代 Netlify Identity）
+  proxy_url: https://sveltia-cms-auth.2302626736.workers.dev  # OAuth 代理地址
+  auth_type: pkce                          # 使用 PKCE 认证
+  auth_scope: repo                         # 需要的权限范围
 
 # 媒体文件存储配置
 media_folder: "assets/images/uploads"      # 媒体文件存储路径（相对于仓库根目录）

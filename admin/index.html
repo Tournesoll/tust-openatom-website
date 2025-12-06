@@ -5,17 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>内容管理后台 - 天津科技大学开放原子开源协会</title>
-  <script type="module">
-    import { init } from 'https://cdn.jsdelivr.net/npm/@sveltia/cms@latest/dist/index.js';
-    
-    init({
-      config: '/tust-openatom-website/admin/config.yml',
-      basePath: '/tust-openatom-website/admin',
-    });
-  </script>
+  <script src="https://unpkg.com/decap-cms@^3.9.0/dist/decap-cms.js"></script>
 </head>
 <body>
-  <div id="sveltia-cms-root"></div>
+  <div id="nc-root"></div>
+  <script>
+    // Decap CMS 会自动初始化并挂载到 #nc-root
+    // 配置文件会自动从 /admin/config.yml 加载
+  </script>
 </body>
 </html>
-

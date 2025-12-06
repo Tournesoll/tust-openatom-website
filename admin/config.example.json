@@ -1,0 +1,19 @@
+{
+  "github": {
+    "clientId": "你的 GitHub OAuth App Client ID",
+    "clientSecret": "你的 GitHub OAuth App Client Secret",
+    "repo": "Tournesoll/tust-openatom-website",
+    "branch": "main",
+    "owner": "Tournesoll",
+    "repoName": "tust-openatom-website"
+  },
+  "server": {
+    "port": 3000,
+    "sessionSecret": "请修改为随机字符串"
+  },
+  "paths": {
+    "postsDir": "../_posts",
+    "imagesDir": "../assets/images/uploads"
+  }
+}
+
