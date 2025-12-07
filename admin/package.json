@@ -47,19 +47,76 @@
             "main.js",
             "server.js",
             "routes/**/*",
+            "utils/**/*",
             "public/**/*",
-            "config.json",
+            "config.example.json",
             "package.json",
-            "node_modules/**/*"
+            "start.bat",
+            "start.sh",
+            "kill-port.bat",
+            "kill-port.sh",
+            "node_modules/**/*",
+            "!node_modules/**/*.{md,ts,map}",
+            "!**/*.{md,ts,map}",
+            "!docs/**/*",
+            "!build.bat"
+        ],
+        "extraFiles": [
+            {
+                "from": "../_config.yml",
+                "to": "../_config.yml"
+            },
+            {
+                "from": "../_posts",
+                "to": "../_posts",
+                "filter": [
+                    "**/*"
+                ]
+            },
+            {
+                "from": "../_layouts",
+                "to": "../_layouts",
+                "filter": [
+                    "**/*"
+                ]
+            },
+            {
+                "from": "../_includes",
+                "to": "../_includes",
+                "filter": [
+                    "**/*"
+                ]
+            },
+            {
+                "from": "../assets",
+                "to": "../assets",
+                "filter": [
+                    "**/*"
+                ]
+            },
+            {
+                "from": "../index.md",
+                "to": "../index.md"
+            },
+            {
+                "from": "../about.md",
+                "to": "../about.md"
+            },
+            {
+                "from": "../intro.md",
+                "to": "../intro.md"
+            },
+            {
+                "from": "../Gemfile",
+                "to": "../Gemfile"
+            },
+            {
+                "from": "../Gemfile.lock",
+                "to": "../Gemfile.lock"
+            }
         ],
         "win": {
             "target": [
-                {
-                    "target": "nsis",
-                    "arch": [
-                        "x64"
-                    ]
-                },
                 {
                     "target": "portable",
                     "arch": [

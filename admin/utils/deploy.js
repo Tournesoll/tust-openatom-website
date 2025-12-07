@@ -11,7 +11,17 @@ const { promisify } = require('util');
 
 const execAsync = promisify(exec);
 
-const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
+// 打包后，extraFiles 中的文件在 resources 目录外
+// 开发环境：__dirname = admin/utils，所以 PROJECT_ROOT = 项目根目录
+// 打包环境：__dirname = resources/app/utils，需要向上找到项目根目录
+const isPackaged = require('electron')?.app?.isPackaged || false;
+let PROJECT_ROOT;
+if (isPackaged) {
+    // 打包后，extraFiles 在 resources 目录外（与 resources 同级）
+    PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..', '..');
+} else {
+    PROJECT_ROOT = path.resolve(__dirname, '..', '..');
+}
 const CONFIG_YML = path.join(PROJECT_ROOT, '_config.yml');
 
 /**

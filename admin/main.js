@@ -9,8 +9,11 @@ let serverProcess = null;
 // 从配置文件读取端口
 let PORT = 8888; // 默认端口
 try {
-    const config = JSON.parse(require('fs').readFileSync(path.join(__dirname, 'config.json'), 'utf8'));
-    PORT = config.server?.port || 8888;
+    const configPath = path.join(__dirname, 'config.json');
+    if (require('fs').existsSync(configPath)) {
+        const config = JSON.parse(require('fs').readFileSync(configPath, 'utf8'));
+        PORT = config.server?.port || 8888;
+    }
 } catch (error) {
     console.log('无法读取配置文件，使用默认端口 8888');
 }
@@ -146,11 +149,35 @@ async function startServer() {
     }
 
     return new Promise((resolve, reject) => {
+        // 打包后使用 Electron 的 Node.js，而不是系统的 node
+        const isPackaged = app.isPackaged;
         const serverPath = path.join(__dirname, 'server.js');
-        serverProcess = spawn('node', [serverPath], {
+        
+        let nodePath;
+        if (isPackaged) {
+            // 打包后，使用 Electron 自带的 Node.js
+            nodePath = process.execPath; // Electron 可执行文件路径
+        } else {
+            // 开发环境，使用系统的 node
+            nodePath = 'node';
+        }
+        
+        // 打包后的环境变量
+        const env = {
+            ...process.env,
+            ELECTRON_RUN_AS_NODE: '1' // 告诉 Electron 以 Node.js 模式运行
+        };
+        
+        // 如果是打包环境，设置正确的路径
+        if (isPackaged) {
+            env.NODE_ENV = 'production';
+        }
+        
+        serverProcess = spawn(nodePath, [serverPath], {
             cwd: __dirname,
             stdio: ['ignore', 'pipe', 'pipe'],
-            shell: true
+            shell: true,
+            env: env
         });
 
         let serverReady = false;
@@ -158,7 +185,7 @@ async function startServer() {
         // 监听服务器输出，检测启动成功
         serverProcess.stdout.on('data', (data) => {
             const output = data.toString();
-            console.log(output);
+            console.log('[服务器输出]', output);
             if (output.includes('管理后台已启动') && !serverReady) {
                 serverReady = true;
                 resolve();
@@ -167,7 +194,7 @@ async function startServer() {
 
         serverProcess.stderr.on('data', (data) => {
             const errorOutput = data.toString();
-            console.error(errorOutput);
+            console.error('[服务器错误]', errorOutput);
 
             // 检测端口占用错误
             if (errorOutput.includes('EADDRINUSE') || errorOutput.includes('address already in use')) {
@@ -179,6 +206,9 @@ async function startServer() {
 
         serverProcess.on('error', (error) => {
             console.error('服务器启动失败:', error);
+            console.error('Node 路径:', nodePath);
+            console.error('服务器路径:', serverPath);
+            console.error('工作目录:', __dirname);
             if (!serverReady) {
                 reject(error);
             }
@@ -224,20 +254,41 @@ function createWindow() {
     // 等待服务器启动后加载页面
     startServer()
         .then(() => {
+            console.log('服务器启动成功，准备加载页面...');
+            
             // 检测是否首次运行
             const configUtils = require('./utils/config');
             const isFirstRun = configUtils.isFirstRun();
+            console.log('首次运行检测:', isFirstRun);
 
             // 根据配置状态加载不同页面
             const url = isFirstRun
                 ? `http://localhost:${PORT}/setup`
                 : `http://localhost:${PORT}`;
+            
+            console.log('加载 URL:', url);
+
+            // 监听页面加载事件
+            mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+                console.error('页面加载失败:', errorCode, errorDescription);
+                mainWindow.loadURL(`data:text/html,<html><head><meta charset="UTF-8"></head><body style="font-family: 'Microsoft YaHei', Arial, sans-serif; padding: 40px; background: #1f2937; color: #fff;">
+                    <h1 style="color: #ef4444;">❌ 页面加载失败</h1>
+                    <p>错误代码: ${errorCode}</p>
+                    <p>错误描述: ${errorDescription}</p>
+                    <p>URL: ${url}</p>
+                    <p>请检查服务器是否正常启动，或查看控制台获取更多信息。</p>
+                </body></html>`);
+            });
+
+            mainWindow.webContents.on('did-finish-load', () => {
+                console.log('页面加载完成');
+            });
 
             mainWindow.loadURL(url);
             mainWindow.show();
 
-            // 开发环境下打开开发者工具
-            if (process.env.NODE_ENV === 'development') {
+            // 打包后也打开开发者工具以便调试
+            if (!app.isPackaged || process.env.DEBUG === '1') {
                 mainWindow.webContents.openDevTools();
             }
         })
