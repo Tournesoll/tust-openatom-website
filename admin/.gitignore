@@ -4,5 +4,16 @@ config.json
 *.log
 .DS_Store
 
+# Electron 构建产物
+dist/
+build/
+*.app
+*.dmg
+*.exe
+*.deb
+*.rpm
+*.AppImage
+
+
 
 
