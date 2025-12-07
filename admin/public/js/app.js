@@ -855,14 +855,27 @@ let categories = [];
 // 打开标签管理模态框
 async function openTagsModal() {
   const modal = document.getElementById('tags-modal');
-  if (!modal) return;
+  if (!modal) {
+    console.error('标签管理模态框不存在');
+    alert('标签管理功能未找到，请刷新页面重试');
+    return;
+  }
   
   modal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
   
-  await loadTagsData();
-  renderTagsModal();
-  setupTagsModalEvents();
+  try {
+    await loadTagsData();
+    renderTagsModal();
+    // 只在第一次打开时绑定事件
+    if (!modal.dataset.eventsBound) {
+      setupTagsModalEvents();
+      modal.dataset.eventsBound = 'true';
+    }
+  } catch (error) {
+    console.error('打开标签管理失败:', error);
+    alert('加载标签数据失败：' + error.message);
+  }
 }
 
 // 加载标签数据
@@ -892,8 +905,7 @@ function renderTagsModal() {
   const categoriesList = document.getElementById('categories-list');
   if (categoriesList) {
     categoriesList.innerHTML = categories.length > 0 ? categories.map(category => {
-      const safe = category.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
-      return `<span class="tag-item">${category}<button class="delete" onclick="deleteCategory('${safe}')"></button></span>`;
+      return `<span class="tag-item" data-category="${category}">${category}<button class="delete"></button></span>`;
     }).join('') : '<p style="color: #9CA3AF;">暂无分类</p>';
   }
   
@@ -901,16 +913,14 @@ function renderTagsModal() {
   if (allTagsList) {
     allTagsList.innerHTML = allTags.length > 0 ? allTags.map(tag => {
       const isSelected = popularTags.includes(tag);
-      const safe = tag.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
-      return `<span class="tag-item ${isSelected ? 'selected' : ''}" data-tag="${safe}" onclick="togglePopularTag('${safe}')">${tag}</span>`;
+      return `<span class="tag-item ${isSelected ? 'selected' : ''}" data-tag="${tag}">${tag}</span>`;
     }).join('') : '<p style="color: #9CA3AF;">暂无标签</p>';
   }
   
   const popularTagsList = document.getElementById('popular-tags-list');
   if (popularTagsList) {
     popularTagsList.innerHTML = popularTags.length > 0 ? popularTags.map(tag => {
-      const safe = tag.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
-      return `<span class="tag-item selected">${tag}<button class="delete" onclick="removePopularTag('${safe}')"></button></span>`;
+      return `<span class="tag-item selected" data-tag="${tag}">${tag}<button class="delete"></button></span>`;
     }).join('') : '<p style="color: #9CA3AF;">未选择热门标签</p>';
   }
 }
@@ -920,27 +930,40 @@ function setupTagsModalEvents() {
   const addCategoryBtn = document.getElementById('add-category-btn');
   const newCategoryInput = document.getElementById('new-category-input');
   const saveTagsBtn = document.getElementById('save-tags-btn');
+  const cancelBtn = document.getElementById('cancel-tags-btn');
+  const bg = document.getElementById('tags-modal-background');
+  const closeBtn = document.getElementById('tags-modal-close');
   
-  if (addCategoryBtn && newCategoryInput) {
-    addCategoryBtn.onclick = async () => {
-      const name = newCategoryInput.value.trim();
+  // 添加分类按钮
+  if (addCategoryBtn) {
+    addCategoryBtn.addEventListener('click', async () => {
+      const name = newCategoryInput ? newCategoryInput.value.trim() : '';
       if (name) {
         await addCategory(name);
-        newCategoryInput.value = '';
+        if (newCategoryInput) newCategoryInput.value = '';
       }
-    };
-    newCategoryInput.onkeypress = async (e) => {
-      if (e.key === 'Enter' && e.target.value.trim()) {
-        await addCategory(e.target.value.trim());
-        e.target.value = '';
-      }
-    };
+    });
   }
   
+  // 输入框回车添加
+  if (newCategoryInput) {
+    newCategoryInput.addEventListener('keypress', async (e) => {
+      if (e.key === 'Enter') {
+        const name = e.target.value.trim();
+        if (name) {
+          await addCategory(name);
+          e.target.value = '';
+        }
+      }
+    });
+  }
+  
+  // 保存按钮
   if (saveTagsBtn) {
-    saveTagsBtn.onclick = saveTags;
+    saveTagsBtn.addEventListener('click', saveTags);
   }
   
+  // 关闭模态框函数
   const closeTagsModal = () => {
     const modal = document.getElementById('tags-modal');
     if (modal) {
@@ -949,13 +972,66 @@ function setupTagsModalEvents() {
     }
   };
   
-  const cancelBtn = document.getElementById('cancel-tags-btn');
-  const bg = document.getElementById('tags-modal-background');
-  const closeBtn = document.getElementById('tags-modal-close');
+  // 取消按钮
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', closeTagsModal);
+  }
   
-  if (cancelBtn) cancelBtn.onclick = closeTagsModal;
-  if (bg) bg.onclick = closeTagsModal;
-  if (closeBtn) closeBtn.onclick = closeTagsModal;
+  // 背景点击关闭
+  if (bg) {
+    bg.addEventListener('click', closeTagsModal);
+  }
+  
+  // 关闭按钮
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeTagsModal);
+  }
+  
+  // 使用事件委托处理动态生成的按钮（只绑定一次，在模态框上）
+  const modal = document.getElementById('tags-modal');
+  if (modal && !modal.dataset.delegateBound) {
+    modal.dataset.delegateBound = 'true';
+    
+    // 统一的事件委托处理
+    modal.addEventListener('click', (e) => {
+      // 分类列表删除按钮
+      const categoriesList = document.getElementById('categories-list');
+      if (categoriesList && categoriesList.contains(e.target)) {
+        if (e.target.classList.contains('delete') || e.target.closest('.delete')) {
+          e.preventDefault();
+          e.stopPropagation();
+          const tagItem = e.target.closest('.tag-item');
+          if (tagItem && tagItem.dataset.category) {
+            deleteCategory(tagItem.dataset.category);
+          }
+          return;
+        }
+      }
+      
+      // 热门标签列表删除按钮
+      const popularTagsList = document.getElementById('popular-tags-list');
+      if (popularTagsList && popularTagsList.contains(e.target)) {
+        if (e.target.classList.contains('delete') || e.target.closest('.delete')) {
+          e.preventDefault();
+          e.stopPropagation();
+          const tagItem = e.target.closest('.tag-item');
+          if (tagItem && tagItem.dataset.tag) {
+            removePopularTag(tagItem.dataset.tag);
+          }
+          return;
+        }
+      }
+      
+      // 所有标签列表点击选择
+      const allTagsList = document.getElementById('all-tags-list');
+      if (allTagsList && allTagsList.contains(e.target)) {
+        const tagItem = e.target.closest('.tag-item');
+        if (tagItem && !e.target.classList.contains('delete') && tagItem.dataset.tag) {
+          togglePopularTag(tagItem.dataset.tag);
+        }
+      }
+    });
+  }
 }
 
 // 添加分类
@@ -981,8 +1057,8 @@ async function addCategory(name) {
   }
 }
 
-// 删除分类
-async function deleteCategory(name) {
+// 删除分类（全局函数，供onclick调用）
+window.deleteCategory = async function(name) {
   if (!confirm(`确定要删除分类"${name}"吗？`)) return;
   
   try {
@@ -1002,23 +1078,23 @@ async function deleteCategory(name) {
     console.error('Delete category error:', error);
     alert('删除失败：' + error.message);
   }
-}
+};
 
-// 切换热门标签
-function togglePopularTag(tag) {
+// 切换热门标签（全局函数，供onclick调用）
+window.togglePopularTag = function(tag) {
   if (popularTags.includes(tag)) {
     popularTags = popularTags.filter(t => t !== tag);
   } else {
     popularTags.push(tag);
   }
   renderTagsModal();
-}
+};
 
-// 移除热门标签
-function removePopularTag(tag) {
+// 移除热门标签（全局函数，供onclick调用）
+window.removePopularTag = function(tag) {
   popularTags = popularTags.filter(t => t !== tag);
   renderTagsModal();
-}
+};
 
 // 保存标签配置
 async function saveTags() {

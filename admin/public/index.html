@@ -291,6 +291,51 @@
     </div>
   </div>
 
+  <!-- 标签管理模态框 -->
+  <div id="tags-modal" class="modal hidden">
+    <div class="modal-background" id="tags-modal-background"></div>
+    <div class="modal-card" style="max-width: 700px;">
+      <header class="modal-card-head">
+        <p class="modal-card-title">
+          <i class="fas fa-tags"></i>
+          <span class="ml-2">标签管理</span>
+        </p>
+        <button class="delete" aria-label="close" id="tags-modal-close"></button>
+      </header>
+      <section class="modal-card-body">
+        <!-- 分类管理 -->
+        <div class="tags-section">
+          <h3 class="tags-section-title">分类管理</h3>
+          <div class="tags-input-group">
+            <input type="text" id="new-category-input" class="input" placeholder="输入新分类名称">
+            <button class="button is-primary" id="add-category-btn">
+              <span class="icon"><i class="fas fa-plus"></i></span>
+              <span>添加</span>
+            </button>
+          </div>
+          <div id="categories-list" class="tags-list"></div>
+        </div>
+
+        <!-- 热门标签管理 -->
+        <div class="tags-section" style="margin-top: 2rem;">
+          <h3 class="tags-section-title">热门标签</h3>
+          <p class="tags-hint">从所有标签中选择热门标签，这些标签会显示在网站首页</p>
+          <div id="all-tags-list" class="tags-list"></div>
+          <div id="popular-tags-list" class="tags-list" style="margin-top: 1rem;">
+            <p class="tags-hint" style="margin-bottom: 0.5rem;">已选热门标签：</p>
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-primary" id="save-tags-btn">
+          <span class="icon"><i class="fas fa-save"></i></span>
+          <span>保存</span>
+        </button>
+        <button class="button is-light" id="cancel-tags-btn">取消</button>
+      </footer>
+    </div>
+  </div>
+
   <script src="js/app.js"></script>
 </body>
 </html>
