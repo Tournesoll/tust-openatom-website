@@ -33,8 +33,18 @@ if not exist "config.json" (
     exit /b 1
 )
 
+REM 检查端口是否被占用
+echo [信息] 检查端口 8888...
+netstat -ano | findstr :8888 >nul 2>&1
+if %errorlevel% equ 0 (
+    echo [警告] 端口 8888 可能被占用
+    echo [提示] 如果启动失败，请运行 kill-port.bat 关闭占用端口的进程
+    echo.
+)
+
 REM 启动 Electron 应用
 echo [信息] 正在启动应用...
+echo [提示] 如果端口被占用，应用会自动尝试关闭占用进程
 echo.
 call npm run electron
 

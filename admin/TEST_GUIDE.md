@@ -55,7 +55,7 @@ NODE_ENV=development npm run electron
 ### 2. 服务器启动测试
 - [ ] 服务器是否自动启动？
 - [ ] 控制台是否显示 "🚀 管理后台已启动！"？
-- [ ] 是否能正常访问 http://localhost:3000？
+- [ ] 是否能正常访问 http://localhost:8888？
 
 ### 3. 功能测试
 - [ ] 能否正常登录（GitHub OAuth）？
@@ -78,15 +78,15 @@ NODE_ENV=development npm run electron
 **检查项：**
 1. Node.js 是否已安装？运行 `node --version`
 2. 依赖是否已安装？运行 `npm list electron`
-3. 端口 3000 是否被占用？
+3. 端口 8888 是否被占用？
 
 **解决方法：**
 ```bash
 # 检查端口占用（Windows）
-netstat -ano | findstr :3000
+netstat -ano | findstr :8888
 
 # 检查端口占用（Mac/Linux）
-lsof -i :3000
+lsof -i :8888
 ```
 
 ### 问题2：服务器启动失败

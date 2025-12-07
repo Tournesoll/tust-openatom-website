@@ -35,7 +35,7 @@ npm install
        "branch": "main"
      },
      "server": {
-       "port": 3000,
+       "port": 8888,
        "sessionSecret": "请修改为随机字符串"
      },
      "paths": {
@@ -48,7 +48,7 @@ npm install
 3. **更新 GitHub OAuth App 回调 URL**
    - 访问：https://github.com/settings/developers
    - 找到你的 OAuth App
-   - 更新回调 URL 为：`http://localhost:3000/api/auth/github/callback`
+   - 更新回调 URL 为：`http://localhost:8888/api/auth/github/callback`
 
 ### 步骤 4：启动服务器
 
@@ -58,7 +58,7 @@ npm start
 
 ### 步骤 5：访问管理后台
 
-打开浏览器访问：`http://localhost:3000`
+打开浏览器访问：`http://localhost:8888`
 
 ## 📝 使用说明
 

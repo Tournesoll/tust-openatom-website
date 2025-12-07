@@ -10,7 +10,6 @@ const gitRoutes = require('./routes/git');
 const tagsRoutes = require('./routes/tags');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // 加载配置文件
 let config;
@@ -20,6 +19,9 @@ try {
   console.error('❌ 配置文件不存在！请复制 config.example.json 为 config.json 并填写配置');
   process.exit(1);
 }
+
+// 从配置文件读取端口，如果没有则使用 8888
+const PORT = process.env.PORT || config.server?.port || 8888;
 
 // 中间件
 app.use(express.json());
