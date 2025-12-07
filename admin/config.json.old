@@ -1,0 +1,18 @@
+{
+  "github": {
+    "clientId": "Ov23li4O8m6iO9mGQK4P",
+    "clientSecret": "576ae9e34cd949ef000e5b88005479f1f865d3a5",
+    "repo": "Tournesoll/tust-openatom-website",
+    "branch": "main",
+    "owner": "Tournesoll",
+    "repoName": "tust-openatom-website"
+  },
+  "server": {
+    "port": 8888,
+    "sessionSecret": "jekyll-admin-secret-key-2025-change-this-in-production"
+  },
+  "paths": {
+    "postsDir": "../_posts",
+    "imagesDir": "../assets/images/uploads"
+  }
+}

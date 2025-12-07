@@ -25,12 +25,11 @@ if not exist "node_modules" (
     )
 )
 
-REM 检查配置文件
+REM 检查配置文件（首次运行模式支持）
 if not exist "config.json" (
-    echo [警告] 未找到 config.json 配置文件
-    echo 请复制 config.example.json 为 config.json 并填写配置
-    pause
-    exit /b 1
+    echo [提示] 未找到 config.json 配置文件
+    echo [提示] 将启动首次运行向导，引导你完成配置
+    echo.
 )
 
 REM 检查端口是否被占用
