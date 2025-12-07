@@ -39,7 +39,7 @@ permalink: /posts/:year/:month/:day/:title/
 theme: null
 
 # URL 设置
-baseurl: "https://Tournesoll.github.io" # 仓库名
+baseurl: "/tust-openatom-website" # 仓库名（必须以 / 开头）
 url: "https://Tournesoll.github.io" # GitHub 用户名
 
 # 分页设置
